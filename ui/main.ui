@@ -12,14 +12,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>256</width>
-    <height>144</height>
+    <width>1280</width>
+    <height>720</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>256</width>
-    <height>144</height>
+    <width>1280</width>
+    <height>720</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -1050,6 +1050,16 @@ QSizeGrip
     </property>
     <property name="autoExclusive">
      <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QMdiArea" name="mdiArea">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>20</y>
+      <width>1021</width>
+      <height>691</height>
+     </rect>
     </property>
    </widget>
   </widget>
