@@ -1018,6 +1018,12 @@ QSizeGrip
 	border: none;
 
 }
+
+QMdiArea {
+    qproperty-background: #323232;
+    border: 10px solid #323232;
+    border-radius: 15px
+}
 </string>
   </property>
   <property name="tabShape">

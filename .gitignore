@@ -1,7 +1,10 @@
 .vscode
 
+# Test files
 BAZA.csv
 IW.xlsx
 ready.xlsx
 
+# Compiled Python cache
 *.pyc
+__pycache__
