@@ -1,7 +1,7 @@
 import pandas as pd
 from os import getlogin
 
-def export(intrastat_file, db_file):
+def export(intrastat_file, db1_file, db2_file, destination):
     # get current user 
     user = getlogin()
     
@@ -9,9 +9,15 @@ def export(intrastat_file, db_file):
     frame = pd.read_excel(intrastat_file)
 
     # import first database and define some constants
-    db1 = pd.read_csv(db_file, delimiter=';').drop('Unnamed: 2', axis=1)
+    db1 = pd.read_csv(db1_file, delimiter=';').drop('Unnamed: 2', axis=1)
     db_KodTowarowy = list(db1["KodTowarowy"])
     db_OpisTowaru = list(db1["OpisTowaru"])
+
+    # import second database and define constants
+    db2 = pd.read_excel(db2_file)
+    db2_StaryKodTowarowy = list(db2["StaryKodTowarowy"])
+    db2_NowyKodTowarowy = list(db2["NowyKodTowarowy"])
+    db2_NowyOpisTowaru = list(db2["NowyOpisTowaru"])
 
     # iterate through every row and change values
     for index in frame.index:
@@ -24,6 +30,10 @@ def export(intrastat_file, db_file):
             i = db_KodTowarowy.index(kodTowarowy)
             frame.loc[index, 'KodTowarowy'] = db_KodTowarowy[i]
             frame.loc[index, 'OpisTowaru'] = db_OpisTowaru[i]
+        if kodTowarowy in db2_StaryKodTowarowy:
+            i = db2_StaryKodTowarowy.index(kodTowarowy)
+            frame.loc[index, 'KodTowarowy'] = db2_NowyKodTowarowy[i]
+            frame.loc[index, 'OpisTowaru'] = db2_NowyOpisTowaru[i]
     
     # save dataframe as .xlsx file
-    frame.to_excel(f"C:/Users/{user}/Desktop/{intrastat_file}", index=False)
+    frame.to_excel(destination, index=False)
