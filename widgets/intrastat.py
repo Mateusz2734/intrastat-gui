@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QComboBox, QMainWindow, QLabel, QPushButton, QFileDialog, QMessageBox
+from logic import importf, exportf
 from PyQt5 import uic
 from os import getlogin
  
@@ -7,7 +8,8 @@ class IntrastatWindow(QMainWindow):
         super(IntrastatWindow, self).__init__()
         self.user = getlogin()
         self.type = None
-        self.destination = f"C:/Users/{self.user}/Desktop/gotowy.xlsx"
+        self.destination_folder = f"C:/Users/{self.user}/Desktop/gotowy.xlsx"
+        self.destination_name = "gotowy.xlsx"
         self.db_file = None
         self.db2_file = None
         self.intrastat_file = None
@@ -80,8 +82,8 @@ class IntrastatWindow(QMainWindow):
     def ok_handler(self):
         if self.choose_type.currentText() != "Wybierz rodzaj Intrastatu" and (self.db_file and self.db2_file and self.intrastat_file) is not None:
             if self.type == "Wywozowy":
-                print("Wybrano Intrastat wywozowy")
+                exportf.exportf(self.intrastat_file, self.db_file, self.db2_file, self.destination_folder, self.destination_name)
             elif self.type == "Przywozowy":
-                print("Wybrano Intrastat przywozowy")
+                importf.importf(self.intrastat_file, self.db_file, self.db2_file, self.destination_folder, self.destination_name)
         else:
             QMessageBox.warning(self, "Ups!", "Proszę podać wszystkie dane i spróbowac ponownie.", QMessageBox.Ok)
