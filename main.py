@@ -5,7 +5,6 @@ import sys
 from widgets import intrastat
  
 class MainWindow(QMainWindow):
-    count = 0
     def __init__(self):
         super(MainWindow, self).__init__()
         self.setWindowIcon(QtGui.QIcon('./imgs/helper.png'))

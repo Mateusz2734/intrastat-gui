@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QComboBox, QMainWindow, QLabel, QPushButton, QFileDialog
 from PyQt5 import uic
+from os import getlogin
  
 class IntrastatWindow(QMainWindow):
     def __init__(self):
@@ -7,6 +8,7 @@ class IntrastatWindow(QMainWindow):
         self.type = None
         self.db_file = None
         self.intrastat_file = None
+        self.user = getlogin()
 
         # load UI file
         uic.loadUi("./ui/intrastat.ui", self)
@@ -18,14 +20,41 @@ class IntrastatWindow(QMainWindow):
         self.label_choose_file = self.findChild(QLabel, "choose_file_label")
         self.btn_choose_file = self.findChild(QPushButton, "choose_file_btn")
         self.btn_ok = self.findChild(QPushButton, "btn_ok")
-        self.btn_cancel = self.findChild(QPushButton, "btn_cancel")
+
+        # disable file buttons
+        self.btn_choose_db.setEnabled(False)
+        self.btn_choose_file.setEnabled(False)
 
         # add click handlers
-        self.btn_choose_db.clicked.connect(self.choose_db)
+        self.choose_type.activated.connect(self.choose_type_handler)
+        self.btn_choose_db.clicked.connect(self.choose_db_handler)
+        self.btn_choose_file.clicked.connect(self.choose_file_handler)
+        self.btn_ok.clicked.connect(self.ok_handler)
 
-    def choose_db(self):
-        fpath = QFileDialog.getOpenFileName(self, "Wybierz bazę danych", "", "Pliki CSV (*.csv);;Wszystkie Pliki (*)")
+    def choose_type_handler(self):
+        if self.choose_type.currentText() != "Wybierz rodzaj Intrastatu":
+            self.type = self.choose_type.currentText()
+            self.btn_choose_db.setEnabled(True)
+            self.btn_choose_file.setEnabled(True)
+        else: 
+            self.btn_choose_db.setEnabled(False)
+            self.btn_choose_file.setEnabled(False)
+
+
+    def choose_db_handler(self):
+        fpath = QFileDialog.getOpenFileName(self, "Wybierz bazę danych", f"C:/Users/{self.user}/Desktop", "Pliki CSV (*.csv);;Wszystkie Pliki (*)")
         if fpath[0] != "":
-            print(fpath[0])
             self.label_choose_db.setText(fpath[0].split("/")[-1])
             self.db_file = fpath[0]
+    
+    def choose_file_handler(self): 
+        if self.type == "Wywozowy":
+            fpath = QFileDialog.getOpenFileName(self, "Wybierz plik Intrastatu", "", "Skoroszyt programu Excel  (*.xlsx);;Wszystkie Pliki (*)")
+        elif self.type == "Przywozowy":
+            fpath = QFileDialog.getOpenFileName(self, "Wybierz plik Intrastatu", "", "Plik XML  (*.xml);;Wszystkie Pliki (*)")
+        if fpath[0] != "":
+            self.label_choose_file.setText(fpath[0].split("/")[-1])
+            self.intrastat_file = fpath[0]
+
+    def ok_handler(self):
+        print(self.type, self.db_file, self.intrastat_file)

@@ -1141,19 +1141,6 @@ QSizeGrip
      <string>Ok</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btn_cancel">
-    <property name="geometry">
-     <rect>
-      <x>310</x>
-      <y>270</y>
-      <width>90</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Anuluj</string>
-    </property>
-   </widget>
   </widget>
  </widget>
  <resources/>
