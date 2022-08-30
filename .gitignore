@@ -1,9 +1,8 @@
 .vscode
 
 # Test files
-BAZA.csv
-IW.xlsx
-ready.xlsx
+*.csv
+*.xlsx
 
 # Compiled Python cache
 *.pyc
