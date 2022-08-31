@@ -5,6 +5,8 @@ from widgets.loader import Loader
 from PyQt5 import uic
 import os
  
+basedir = os.path.dirname(os.path.dirname(__file__))
+
 class InvoiceWindow(QMainWindow):
     def __init__(self):
         super(InvoiceWindow, self).__init__()
@@ -15,7 +17,7 @@ class InvoiceWindow(QMainWindow):
         self.loader = Loader()
 
         # load UI file
-        uic.loadUi("./ui/invoice.ui", self)
+        uic.loadUi(os.path.join(basedir, "./ui/invoice.ui"), self)
 
         # define buttons
         self.btn_choose_db = self.findChild(QPushButton, "choose_db_btn")

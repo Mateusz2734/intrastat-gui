@@ -5,7 +5,10 @@ from workers.ImportWorker import ImportWorker
 from widgets.loader import Loader
 from PyQt5 import uic
 from os import getlogin
+import os
  
+basedir = os.path.dirname(os.path.dirname(__file__))
+
 class IntrastatWindow(QMainWindow):
     def __init__(self):
         super(IntrastatWindow, self).__init__()
@@ -20,7 +23,7 @@ class IntrastatWindow(QMainWindow):
         self.loader = Loader()
 
         # load UI file
-        uic.loadUi("./ui/intrastat.ui", self)
+        uic.loadUi(os.path.join(basedir, "./ui/intrastat.ui"), self)
 
         # define buttons
         self.btn_choose_db = self.findChild(QPushButton, "choose_db_btn")

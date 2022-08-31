@@ -1,10 +1,11 @@
-
 from PyQt5.QtWidgets import QMainWindow, QLabel
 from PyQt5.QtCore import QSize
 from PyQt5.QtGui import QMovie
 from PyQt5.QtCore import Qt
+import os
   
-  
+basedir = os.path.dirname(os.path.dirname(__file__))
+
 class Loader(QMainWindow):
     def __init__(self):
         super(Loader, self).__init__()
@@ -16,7 +17,7 @@ class Loader(QMainWindow):
         self.setWindowFlag(Qt.FramelessWindowHint)
         self.setStyleSheet("QLabel {background-color: #242424}")
 
-        self.movie = QMovie("./imgs/loader.gif")
+        self.movie = QMovie(os.path.join(basedir, "./imgs/loader.gif"))
         self.label.setMovie(self.movie)
   
         self.movie.start()

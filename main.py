@@ -4,14 +4,17 @@ from PyQt5 import QtGui
 import sys
 from widgets.intrastat import IntrastatWindow
 from widgets.invoice import InvoiceWindow
- 
+import os
+
+basedir = os.path.dirname(__file__)
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
-        self.setWindowIcon(QtGui.QIcon('./imgs/helper.png'))
+        self.setWindowIcon(QtGui.QIcon(os.path.join(basedir, './imgs/helper.png')))
 
         # load UI file
-        uic.loadUi("./ui/main.ui", self)
+        uic.loadUi(os.path.join(basedir, "./ui/main.ui"), self)
 
         # define widgets and buttons
         self.mdi = self.findChild(QMdiArea, "mdiArea")
@@ -40,7 +43,7 @@ class MainWindow(QMainWindow):
         self.mdi.tileSubWindows()
 
 app = QApplication(sys.argv)
-File = open("ui/style.qss",'r')
+File = open(os.path.join(basedir, "ui/style.qss"),'r')
 
 with File:
 	qss = File.read()
