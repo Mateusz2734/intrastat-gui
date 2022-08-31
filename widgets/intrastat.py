@@ -88,7 +88,7 @@ class IntrastatWindow(QMainWindow):
     def runExportWorker(self):
         self.thread = QThread()
 
-        self.worker = ExportWorker(self.intrastat_file, self.db_file, self.db2_file, self.destination_folder, self.destination_name)
+        self.worker = ExportWorker(self.intrastat_file, self.db_file, self.db2_file)
 
         self.worker.moveToThread(self.thread)
 
@@ -105,7 +105,7 @@ class IntrastatWindow(QMainWindow):
     def runImportWorker(self):
         self.thread = QThread()
 
-        self.worker = ImportWorker(self.intrastat_file, self.db_file, self.db2_file, self.destination_folder, self.destination_name)
+        self.worker = ImportWorker(self.intrastat_file, self.db_file, self.db2_file)
 
         self.worker.moveToThread(self.thread)
 
