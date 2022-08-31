@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMdiArea, QPushButton
 from PyQt5 import uic
+from PyQt5.QtCore import QFile, QTextStream
 from PyQt5 import QtGui
 import sys
 from widgets import intrastat
@@ -25,12 +26,17 @@ class MainWindow(QMainWindow):
     def add_window_intrastat(self):
         page = intrastat.IntrastatWindow()
         subwindow = self.mdi.addSubWindow(page)
-        subwindow.setWindowTitle("Wprowadź informacje")
-
+        subwindow.setWindowTitle("INTRASTAT | Wprowadź informacje")
         subwindow.show()
-        
         self.mdi.tileSubWindows()
- 
+
 app = QApplication(sys.argv)
+File = open("ui/style.qss",'r')
+
+with File:
+	qss = File.read()
+	app.setStyleSheet(qss)
+
+
 MainWindow = MainWindow()
 app.exec_()
