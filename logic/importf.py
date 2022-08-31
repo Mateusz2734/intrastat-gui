@@ -4,11 +4,14 @@ import pandas as pd
 import glob
 import os
 
-def importf(intrastat_dir, db1_file, db2_file, destination_folder, destination_name): #
+def importf(intrastat_dir, db1_file, db2_file, destination_folder, destination_name):
+    
+    os.chdir(intrastat_dir)
     
     # rename all xml files
-    files = glob.glob(f'{intrastat_dir}/*.xml')
+    files = glob.glob('*.xml')
     for file in files:
+        file.replace("\\", "/")
         os.rename(file, f'{int(file.split(".")[0]):03d}.xml')
 
     # define main parser

@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QComboBox, QMainWindow, QLabel, QPushButton, QFileDialog, QMessageBox
-from PyQt5.QtCore import QThread
+from PyQt5.QtCore import QThread, Qt
 from workers.ExportWorker import ExportWorker
 from workers.ImportWorker import ImportWorker
 from PyQt5 import uic
@@ -90,6 +90,7 @@ class IntrastatWindow(QMainWindow):
 
         self.thread.started.connect(self.worker.run)
         self.worker.finished.connect(lambda: QMessageBox.information(self, "Gotowe!", "Plik został przetworzony", QMessageBox.Ok))
+        self.worker.finished.connect(self.show_message)
         self.worker.finished.connect(self.thread.quit)
         self.worker.finished.connect(self.worker.deleteLater)
         self.thread.finished.connect(self.thread.deleteLater)
@@ -104,13 +105,32 @@ class IntrastatWindow(QMainWindow):
         self.worker.moveToThread(self.thread)
 
         self.thread.started.connect(self.worker.run)
-        # self.worker.finished.connect(lambda: QMessageBox.information(self, "Gotowe!", "Plik został przetworzony", QMessageBox.Ok))
+        self.worker.finished.connect(self.show_message)
         self.worker.finished.connect(self.thread.quit)
         self.worker.finished.connect(self.worker.deleteLater)
         self.thread.finished.connect(self.thread.deleteLater)
 
         self.thread.start()
 
+    def show_message(self):
+        msg = QMessageBox(self)
+        msg.setWindowTitle("Gotowe!")
+        msg.setStyleSheet("QMessageBox {border: 2px solid #4891b4; border-radius:15px}")
+        msg.setText("Plik został przetworzony.")
+        msg.setStandardButtons(QMessageBox.Ok)
+        msg.setIcon(QMessageBox.Information)
+        msg.setWindowFlag(Qt.FramelessWindowHint)
+        msg.exec()
+
+    def show_warning(self):
+        warn = QMessageBox(self)
+        warn.setStyleSheet("QMessageBox {border: 2px solid #4891b4; border-radius:15px}")
+        warn.setWindowTitle("Ups!")
+        warn.setText("Proszę podać wszystkie dane i spróbowac ponownie.")
+        warn.setStandardButtons(QMessageBox.Ok)
+        warn.setIcon(QMessageBox.Warning)
+        warn.setWindowFlag(Qt.FramelessWindowHint)
+        warn.exec()
 
     def ok_handler(self):
         if self.choose_type.currentText() != "Wybierz rodzaj Intrastatu" and (self.db_file and self.db2_file and self.intrastat_file) is not None:
@@ -119,4 +139,4 @@ class IntrastatWindow(QMainWindow):
             elif self.type == "Przywozowy":
                 self.runImportWorker()
         else:
-            QMessageBox.warning(self, "Ups!", "Proszę podać wszystkie dane i spróbowac ponownie.", QMessageBox.Ok)
+            self.show_warning()

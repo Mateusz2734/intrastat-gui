@@ -10,8 +10,9 @@ class ImportWorker(QObject):
         self.destination_folder = destination_folder 
         self.destination_name = destination_name
     finished = pyqtSignal()
-    progress = pyqtSignal(int)
+    started = pyqtSignal()
 
     def run(self):
+        self.started.emit()
         importf(self.intrastat_file, self.db_file, self.db2_file, self.destination_folder, self.destination_name)
         self.finished.emit()
