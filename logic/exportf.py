@@ -36,4 +36,4 @@ def exportf(intrastat_file, db1_file, db2_file):
             frame.loc[index, 'OpisTowaru'] = db2_NowyOpisTowaru[i]
     
     # save dataframe as .xlsx file
-    frame.to_excel(f"C:/Users/{user}/Desktop.xlsx", index=False)
+    frame.to_excel(f"C:/Users/{user}/Desktop/gotowe.xlsx", index=False)
