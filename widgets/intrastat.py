@@ -1,5 +1,7 @@
 from PyQt5.QtWidgets import QComboBox, QMainWindow, QLabel, QPushButton, QFileDialog, QMessageBox
-from logic import importf, exportf
+from PyQt5.QtCore import QThread
+from workers.ExportWorker import ExportWorker
+from workers.ImportWorker import ImportWorker
 from PyQt5 import uic
 from os import getlogin
  
@@ -8,8 +10,8 @@ class IntrastatWindow(QMainWindow):
         super(IntrastatWindow, self).__init__()
         self.user = getlogin()
         self.type = None
-        self.destination_folder = f"C:/Users/{self.user}/Desktop/gotowy.xlsx"
-        self.destination_name = "gotowy.xlsx"
+        self.destination_folder = f"C:/Users/{self.user}/Desktop"
+        self.destination_name = "gotowy"
         self.db_file = None
         self.db2_file = None
         self.intrastat_file = None
@@ -79,11 +81,42 @@ class IntrastatWindow(QMainWindow):
                 self.label_choose_file.setText(fpath)
                 self.intrastat_file = fpath
 
+    def runExportWorker(self):
+        self.thread = QThread()
+
+        self.worker = ExportWorker(self.intrastat_file, self.db_file, self.db2_file, self.destination_folder, self.destination_name)
+
+        self.worker.moveToThread(self.thread)
+
+        self.thread.started.connect(self.worker.run)
+        self.worker.finished.connect(lambda: QMessageBox.information(self, "Gotowe!", "Plik został przetworzony", QMessageBox.Ok))
+        self.worker.finished.connect(self.thread.quit)
+        self.worker.finished.connect(self.worker.deleteLater)
+        self.thread.finished.connect(self.thread.deleteLater)
+
+        self.thread.start()
+
+    def runImportWorker(self):
+        self.thread = QThread()
+
+        self.worker = ImportWorker(self.intrastat_file, self.db_file, self.db2_file, self.destination_folder, self.destination_name)
+
+        self.worker.moveToThread(self.thread)
+
+        self.thread.started.connect(self.worker.run)
+        # self.worker.finished.connect(lambda: QMessageBox.information(self, "Gotowe!", "Plik został przetworzony", QMessageBox.Ok))
+        self.worker.finished.connect(self.thread.quit)
+        self.worker.finished.connect(self.worker.deleteLater)
+        self.thread.finished.connect(self.thread.deleteLater)
+
+        self.thread.start()
+
+
     def ok_handler(self):
         if self.choose_type.currentText() != "Wybierz rodzaj Intrastatu" and (self.db_file and self.db2_file and self.intrastat_file) is not None:
             if self.type == "Wywozowy":
-                exportf.exportf(self.intrastat_file, self.db_file, self.db2_file, self.destination_folder, self.destination_name)
+                self.runExportWorker()
             elif self.type == "Przywozowy":
-                importf.importf(self.intrastat_file, self.db_file, self.db2_file, self.destination_folder, self.destination_name)
+                self.runImportWorker()
         else:
             QMessageBox.warning(self, "Ups!", "Proszę podać wszystkie dane i spróbowac ponownie.", QMessageBox.Ok)

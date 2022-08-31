@@ -63,9 +63,9 @@ def importf(intrastat_dir, db1_file, db2_file, destination_folder, destination_n
     dataframe_info["LacznaLiczbaPozycji"] = dataframe_info["LacznaLiczbaPozycji"].astype("int64")
 
     # save files
-    dataframe_intrastat.to_excel("C:/temp.xlsx", index=False)
+    dataframe_intrastat.to_excel("C:/data/Pomocnik/temp.xlsx", index=False)
     dataframe_info.to_excel(f"{destination_folder}/info.xlsx", index=False)
 
-    exportf.exportf("C:/temp.xlsx", db1_file, db2_file, destination_folder, destination_name)
+    exportf.exportf("C:/data/Pomocnik/temp.xlsx", db1_file, db2_file, destination_folder, destination_name)
 
-    os.remove("C:/temp.xlsx")
+    os.remove("C:/data/Pomocnik/temp.xlsx")
