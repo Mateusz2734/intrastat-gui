@@ -1,7 +1,7 @@
 import pandas as pd
 from os import getlogin
 
-def exportf(intrastat_file, db1_file, db2_file, destination_folder, destination_name):
+def exportf(intrastat_file, db1_file, db2_file):
     # get current user 
     user = getlogin()
     
@@ -36,4 +36,4 @@ def exportf(intrastat_file, db1_file, db2_file, destination_folder, destination_
             frame.loc[index, 'OpisTowaru'] = db2_NowyOpisTowaru[i]
     
     # save dataframe as .xlsx file
-    frame.to_excel(f"{destination_folder}/{destination_name}.xlsx", index=False)
+    frame.to_excel(f"C:/Users/{user}/Desktop.xlsx", index=False)

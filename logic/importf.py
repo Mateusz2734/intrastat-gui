@@ -4,8 +4,11 @@ import pandas as pd
 import glob
 import os
 
-def importf(intrastat_dir, db1_file, db2_file, destination_folder, destination_name):
-    
+def importf(intrastat_dir, db1_file, db2_file):
+    # get current user
+    user = os.getlogin()
+
+    # cd into folder with xml files
     os.chdir(intrastat_dir)
     
     # rename all xml files
@@ -67,8 +70,8 @@ def importf(intrastat_dir, db1_file, db2_file, destination_folder, destination_n
 
     # save files
     dataframe_intrastat.to_excel("C:/data/Pomocnik/temp.xlsx", index=False)
-    dataframe_info.to_excel(f"{destination_folder}/info.xlsx", index=False)
+    dataframe_info.to_excel(f"C:/Users/{user}/Desktop/info.xlsx", index=False)
 
-    exportf.exportf("C:/data/Pomocnik/temp.xlsx", db1_file, db2_file, destination_folder, destination_name)
+    exportf.exportf("C:/data/Pomocnik/temp.xlsx", db1_file, db2_file)
 
     os.remove("C:/data/Pomocnik/temp.xlsx")
