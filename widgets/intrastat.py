@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QComboBox, QMainWindow, QLabel, QPushButton, QFileDi
 from PyQt5.QtCore import QThread, Qt
 from workers.ExportWorker import ExportWorker
 from workers.ImportWorker import ImportWorker
+from widgets.loader import Loader
 from PyQt5 import uic
 from os import getlogin
  
@@ -16,6 +17,8 @@ class IntrastatWindow(QMainWindow):
         self.db2_file = None
         self.intrastat_file = None
 
+        self.loader = Loader()
+
         # load UI file
         uic.loadUi("./ui/intrastat.ui", self)
 
@@ -23,6 +26,7 @@ class IntrastatWindow(QMainWindow):
         self.btn_choose_db = self.findChild(QPushButton, "choose_db_btn")
         self.btn_choose_file = self.findChild(QPushButton, "choose_file_btn")
         self.btn_choose_db2 = self.findChild(QPushButton, "choose_db2_btn")
+        self.btn_ok = self.findChild(QPushButton, "btn_ok")
         
         # define labels
         self.label_choose_db = self.findChild(QLabel, "choose_db_label")
@@ -89,7 +93,8 @@ class IntrastatWindow(QMainWindow):
         self.worker.moveToThread(self.thread)
 
         self.thread.started.connect(self.worker.run)
-        self.worker.finished.connect(lambda: QMessageBox.information(self, "Gotowe!", "Plik został przetworzony", QMessageBox.Ok))
+        self.worker.started.connect(self.show_loader)
+        self.worker.finished.connect(self.hide_loader)
         self.worker.finished.connect(self.show_message)
         self.worker.finished.connect(self.thread.quit)
         self.worker.finished.connect(self.worker.deleteLater)
@@ -105,6 +110,8 @@ class IntrastatWindow(QMainWindow):
         self.worker.moveToThread(self.thread)
 
         self.thread.started.connect(self.worker.run)
+        self.worker.started.connect(self.show_loader)
+        self.worker.finished.connect(self.hide_loader)
         self.worker.finished.connect(self.show_message)
         self.worker.finished.connect(self.thread.quit)
         self.worker.finished.connect(self.worker.deleteLater)
@@ -131,6 +138,12 @@ class IntrastatWindow(QMainWindow):
         warn.setIcon(QMessageBox.Warning)
         warn.setWindowFlag(Qt.FramelessWindowHint)
         warn.exec()
+
+    def show_loader(self):
+        self.loader.show()
+
+    def hide_loader(self):
+        self.loader.hide()
 
     def ok_handler(self):
         if self.choose_type.currentText() != "Wybierz rodzaj Intrastatu" and (self.db_file and self.db2_file and self.intrastat_file) is not None:

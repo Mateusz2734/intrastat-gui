@@ -22,12 +22,6 @@
     <height>720</height>
    </size>
   </property>
-  <property name="maximumSize">
-   <size>
-    <width>1920</width>
-    <height>1080</height>
-   </size>
-  </property>
   <property name="font">
    <font>
     <family>Calibri</family>
