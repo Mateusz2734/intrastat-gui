@@ -1,7 +1,7 @@
 import pandas as pd
 from os import getlogin
 
-def invoice(intrastat_file, db_file):
+def invoice(invoice_file, db_file):
     # get current user
     user = getlogin()
 
@@ -11,7 +11,7 @@ def invoice(intrastat_file, db_file):
     db_OpisTowaru = list(db["OpisTowaru"])
     
     # make dataframe from Excel file
-    frame = pd.read_excel(intrastat_file)
+    frame = pd.read_excel(invoice_file)
 
     # iterate through every row and change values
     for index in frame.index:

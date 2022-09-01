@@ -14,7 +14,7 @@ class SettingsWindow(QMainWindow):
     def __init__(self):
         super(SettingsWindow, self).__init__()
         self.user = getlogin()
-        self.path = f"C:/Users/{self.user}/Pomocnik/settings.json"
+        self.path = f"C:/Skrypty/Pomocnik/settings.json"
 
         # load UI file
         uic.loadUi(os.path.join(basedir, "./ui/settings.ui"), self)

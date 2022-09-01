@@ -2,10 +2,12 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QMdiArea, QPushButton
 from PyQt5 import uic
 from PyQt5 import QtGui
 import sys
+from logic.create_settings import create_settings
 from widgets.intrastat import IntrastatWindow
 from widgets.invoice import InvoiceWindow
 from widgets.settings import SettingsWindow
 import os
+import pyi_splash # type: ignore
 
 basedir = os.path.dirname(__file__)
 
@@ -28,6 +30,11 @@ class MainWindow(QMainWindow):
         self.invoice_btn.clicked.connect(self.add_window_invoice)
         self.settings_btn.clicked.connect(self.add_window_settings)
 
+        # create settings file
+        create_settings()
+
+        # close splash screen
+        pyi_splash.close()
 
         # show main window
         self.show()
