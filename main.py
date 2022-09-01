@@ -4,6 +4,7 @@ from PyQt5 import QtGui
 import sys
 from widgets.intrastat import IntrastatWindow
 from widgets.invoice import InvoiceWindow
+from widgets.settings import SettingsWindow
 import os
 
 basedir = os.path.dirname(__file__)
@@ -25,7 +26,7 @@ class MainWindow(QMainWindow):
         # button click handlers
         self.intrastat_btn.clicked.connect(self.add_window_intrastat)
         self.invoice_btn.clicked.connect(self.add_window_invoice)
-        self.settings_btn.setEnabled(False)
+        self.settings_btn.clicked.connect(self.add_window_settings)
 
 
         # show main window
@@ -44,6 +45,14 @@ class MainWindow(QMainWindow):
         subwindow.setWindowTitle("FAKTURA | Wprowadź informacje")
         subwindow.show()
         self.mdi.tileSubWindows()
+
+    def add_window_settings(self):
+        page = SettingsWindow()
+        subwindow = self.mdi.addSubWindow(page)
+        subwindow.setWindowTitle("USTAWIENIA | Zmień domyślne wartości")
+        subwindow.show()
+        self.mdi.tileSubWindows()
+
 
 app = QApplication(sys.argv)
 File = open(os.path.join(basedir, "ui/style.qss"),'r')
