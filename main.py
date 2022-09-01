@@ -20,11 +20,14 @@ class MainWindow(QMainWindow):
         self.mdi = self.findChild(QMdiArea, "mdiArea")
         self.intrastat_btn = self.findChild(QPushButton, "intrastat_btn")
         self.invoice_btn = self.findChild(QPushButton, "invoice_btn")
- 
+        self.settings_btn = self.findChild(QPushButton, "settings_btn")
+
         # button click handlers
         self.intrastat_btn.clicked.connect(self.add_window_intrastat)
         self.invoice_btn.clicked.connect(self.add_window_invoice)
-    
+        self.settings_btn.setEnabled(False)
+
+
         # show main window
         self.show()
        
