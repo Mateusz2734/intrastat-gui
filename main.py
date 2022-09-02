@@ -2,12 +2,12 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QMdiArea, QPushButton
 from PyQt5 import uic
 from PyQt5 import QtGui
 import sys
-from logic.create_settings import create_settings
+from logic.settings import create_settings
 from widgets.intrastat import IntrastatWindow
 from widgets.invoice import InvoiceWindow
 from widgets.settings import SettingsWindow
 import os
-import pyi_splash # type: ignore
+# import pyi_splash # type: ignore
 
 basedir = os.path.dirname(__file__)
 
@@ -34,7 +34,7 @@ class MainWindow(QMainWindow):
         create_settings()
 
         # close splash screen
-        pyi_splash.close()
+        # pyi_splash.close()
 
         # show main window
         self.show()

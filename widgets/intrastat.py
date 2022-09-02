@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QComboBox, QMainWindow, QLabel, QPushButton, QFileDi
 from PyQt5.QtCore import QThread, Qt
 from workers.ExportWorker import ExportWorker
 from workers.ImportWorker import ImportWorker
+from logic.settings import read_settings
 from widgets.loader import Loader
 from PyQt5 import uic
 from os import getlogin
@@ -10,14 +11,14 @@ import os
 basedir = os.path.dirname(os.path.dirname(__file__))
 
 class IntrastatWindow(QMainWindow):
+    
     def __init__(self):
         super(IntrastatWindow, self).__init__()
+        self.settings = read_settings()["intrastat"]
         self.user = getlogin()
-        self.type = None
-        self.destination_folder = f"C:/Users/{self.user}/Desktop"
-        self.destination_name = "gotowy"
-        self.db_file = None
-        self.db2_file = None
+        self.type = None    
+        self.db_file = self.settings["db1"]
+        self.db2_file = self.settings["db2"]
         self.intrastat_file = None
 
         self.loader = Loader()
@@ -36,6 +37,8 @@ class IntrastatWindow(QMainWindow):
         self.label_choose_file = self.findChild(QLabel, "choose_file_label")
         self.label_choose_db2 = self.findChild(QLabel, "choose_db2_label")
         
+        self.populate_labels()
+
         #define other widgets
         self.choose_type = self.findChild(QComboBox, "intrastat_choose_type")
 
@@ -52,6 +55,12 @@ class IntrastatWindow(QMainWindow):
 
         # other handlers
         self.choose_type.activated.connect(self.choose_type_handler)
+
+    def populate_labels(self):
+        self.label_choose_file.setText(self.intrastat_file)
+        self.label_choose_db.setText(self.db_file)
+        self.label_choose_db2.setText(self.db2_file)
+
 
     def choose_type_handler(self):
         if self.choose_type.currentText() != "Wybierz rodzaj Intrastatu":

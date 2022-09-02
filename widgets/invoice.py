@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QComboBox, QMainWindow, QLabel, QPushButton, QFileDialog, QMessageBox
 from PyQt5.QtCore import QThread, Qt
 from workers.InvoiceWorker import InvoiceWorker
+from logic.settings import read_settings
 from widgets.loader import Loader
 from PyQt5 import uic
 import os
@@ -10,7 +11,8 @@ basedir = os.path.dirname(os.path.dirname(__file__))
 class InvoiceWindow(QMainWindow):
     def __init__(self):
         super(InvoiceWindow, self).__init__()
-        self.db_file = None
+        self.settings = read_settings()["invoice"]
+        self.db_file = self.settings["db"]
         self.invoice_file = None
         self.user = os.getlogin()
 
@@ -27,11 +29,17 @@ class InvoiceWindow(QMainWindow):
         # define labels
         self.label_choose_db = self.findChild(QLabel, "choose_db_label")
         self.label_choose_file = self.findChild(QLabel, "choose_file_label")
+
+        self.populate_labels()
         
         # click handlers
         self.btn_choose_db.clicked.connect(self.choose_db_handler)
         self.btn_choose_file.clicked.connect(self.choose_file_handler)
         self.btn_ok.clicked.connect(self.ok_handler)
+
+    def populate_labels(self):
+        self.label_choose_file.setText(self.invoice_file)
+        self.label_choose_db.setText(self.db_file)
 
     def choose_db_handler(self):
         fpath = QFileDialog.getOpenFileName(self, "Wybierz bazę danych", f"C:/Users/{self.user}/Desktop", "Pliki CSV (*.csv)")
