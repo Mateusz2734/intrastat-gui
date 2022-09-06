@@ -30,10 +30,12 @@ def exportf(intrastat_file, db1_file, db2_file):
             i = db_KodTowarowy.index(kodTowarowy)
             frame.loc[index, 'KodTowarowy'] = db_KodTowarowy[i]
             frame.loc[index, 'OpisTowaru'] = db_OpisTowaru[i]
-        if kodTowarowy in db2_StaryKodTowarowy:
-            i = db2_StaryKodTowarowy.index(kodTowarowy)
+            print("Znaleziono2", i, db_KodTowarowy[i], db_OpisTowaru[i])
+        if kod in db2_StaryKodTowarowy:
+            i = db2_StaryKodTowarowy.index(kod)
             frame.loc[index, 'KodTowarowy'] = db2_NowyKodTowarowy[i]
             frame.loc[index, 'OpisTowaru'] = db2_NowyOpisTowaru[i]
+            print("Znaleziono", i, db2_NowyKodTowarowy[i], db2_NowyOpisTowaru[i])
     
     # save dataframe as .xlsx file
     frame.to_excel(f"C:/Users/{user}/Desktop/gotowe.xlsx", index=False)
