@@ -9,5 +9,3 @@ def convert(xls_file):
     out = os.path.join(dirname, f"{filename}-zmieniony.xlsx")
 
     save_book_as(file_name=xls_file, dest_file_name=out)
-
-convert("C:\\Users\\mateu\\Desktop\\testowy.XLS")
