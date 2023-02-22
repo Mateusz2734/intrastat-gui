@@ -1,10 +1,11 @@
-from PyQt5.QtWidgets import QMainWindow, QLabel, QWidget
-from PyQt5.QtCore import QSize
-from PyQt5.QtGui import QMovie
-from PyQt5.QtCore import Qt
 import os
-  
+
+from PyQt5.QtWidgets import QLabel, QWidget
+from PyQt5.QtCore import Qt, QSize
+from PyQt5.QtGui import QMovie
+
 basedir = os.path.dirname(os.path.dirname(__file__))
+
 
 class Loader(QWidget):
     def __init__(self):
@@ -20,5 +21,5 @@ class Loader(QWidget):
 
         self.movie = QMovie(os.path.join(basedir, "imgs\loader.gif"))
         self.label.setMovie(self.movie)
-  
+
         self.movie.start()

@@ -1,10 +1,11 @@
+import json
+import os
+
 from PyQt5.QtWidgets import QMainWindow, QPushButton, QMessageBox, QPlainTextEdit
 from PyQt5.QtCore import Qt
 from PyQt5 import uic
-from os import getlogin
-import os
-import json
- 
+
+
 def is_json(candidate):
     try:
         json.loads(candidate)
@@ -12,12 +13,14 @@ def is_json(candidate):
         return False
     return True
 
+
 basedir = os.path.dirname(os.path.dirname(__file__))
+
 
 class SettingsWindow(QMainWindow):
     def __init__(self):
         super(SettingsWindow, self).__init__()
-        self.user = getlogin()
+        self.user = os.getlogin()
         self.path = "C:/Skrypty/Pomocnik/settings.json"
 
         # load UI file
@@ -26,7 +29,7 @@ class SettingsWindow(QMainWindow):
         # define widgets
         self.btn_ok = self.findChild(QPushButton, "btn_ok")
         self.editor = self.findChild(QPlainTextEdit, "editor")
-        
+
         self.load_data()
 
         self.btn_ok.clicked.connect(self.save_data)
@@ -35,7 +38,8 @@ class SettingsWindow(QMainWindow):
     def load_data(self):
         with open(self.path, "r") as file:
             data = json.load(file)
-            self.editor.setPlainText(json.dumps(data, indent=4, sort_keys=True))
+            self.editor.setPlainText(json.dumps(
+                data, indent=4, sort_keys=True))
 
     def save_data(self):
         data = self.editor.toPlainText()
@@ -46,10 +50,11 @@ class SettingsWindow(QMainWindow):
                 self.show_message()
         else:
             self.show_warning()
-            
+
     def show_warning(self):
         warn = QMessageBox(self)
-        warn.setStyleSheet("QMessageBox {border: 2px solid #4891b4; border-radius:15px}")
+        warn.setStyleSheet(
+            "QMessageBox {border: 2px solid #4891b4; border-radius:15px}")
         warn.setWindowTitle("Ups!")
         warn.setText("Nieprawidłowy format pliku .json")
         warn.setStandardButtons(QMessageBox.Ok)
@@ -60,7 +65,8 @@ class SettingsWindow(QMainWindow):
     def show_message(self):
         msg = QMessageBox(self)
         msg.setWindowTitle("Gotowe!")
-        msg.setStyleSheet("QMessageBox {border: 2px solid #4891b4; border-radius:15px}")
+        msg.setStyleSheet(
+            "QMessageBox {border: 2px solid #4891b4; border-radius:15px}")
         msg.setText("Pomyślnie zapisano ustawienia.")
         msg.setStandardButtons(QMessageBox.Ok)
         msg.setIcon(QMessageBox.Information)

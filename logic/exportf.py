@@ -1,10 +1,12 @@
-import pandas as pd
 from os import getlogin
 
+import pandas as pd
+
+
 def exportf(intrastat_file, db1_file, db2_file):
-    # get current user 
+    # get current user
     user = getlogin()
-    
+
     # make dataframe from .xlsx file
     frame = pd.read_excel(intrastat_file)
 
@@ -35,7 +37,6 @@ def exportf(intrastat_file, db1_file, db2_file):
             i = db2_StaryKodTowarowy.index(kod)
             frame.loc[index, 'KodTowarowy'] = db2_NowyKodTowarowy[i]
             frame.loc[index, 'OpisTowaru'] = db2_NowyOpisTowaru[i]
-            print("Znaleziono", i, db2_NowyKodTowarowy[i], db2_NowyOpisTowaru[i])
-    
+
     # save dataframe as .xlsx file
     frame.to_excel(f"C:/Users/{user}/Desktop/gotowe.xlsx", index=False)

@@ -1,8 +1,11 @@
-import xml.etree.ElementTree as Et
-from logic import exportf
-import pandas as pd
 import glob
 import os
+import xml.etree.ElementTree as Et
+
+import pandas as pd
+
+from logic import exportf
+
 
 def importf(intrastat_dir, db1_file, db2_file):
     # get current user
@@ -10,7 +13,7 @@ def importf(intrastat_dir, db1_file, db2_file):
 
     # cd into folder with xml files
     os.chdir(intrastat_dir)
-    
+
     # rename all xml files
     files = glob.glob('*.xml')
     for file in files:
@@ -40,23 +43,30 @@ def importf(intrastat_dir, db1_file, db2_file):
         frame_info = pd.DataFrame(elems)
         frame_info.insert(0, "NrDokumentu", number, True)
         return frame_info
-    
+
     # parse every xml file
     dataframe_intrastat = pd.DataFrame()
     dataframe_info = pd.DataFrame()
     files = glob.glob('*.xml')
     for file in files:
-        dataframe_intrastat = pd.concat([dataframe_intrastat, parser_intrastat(file)])
+        dataframe_intrastat = pd.concat(
+            [dataframe_intrastat, parser_intrastat(file)])
         dataframe_info = pd.concat([dataframe_info, parser_info(file)])
 
     # cast types in main file
     dataframe_intrastat["PozId"] = dataframe_intrastat["PozId"].astype("int64")
-    dataframe_intrastat["RodzajTransakcji"] = dataframe_intrastat["RodzajTransakcji"].astype("int64")
-    dataframe_intrastat["KodTowarowy"] = dataframe_intrastat["KodTowarowy"].astype("int64")
-    dataframe_intrastat["MasaNetto"] = dataframe_intrastat["MasaNetto"].astype("int64")
-    dataframe_intrastat["IloscUzupelniajacaJm"] = dataframe_intrastat["IloscUzupelniajacaJm"].astype("int64")
-    dataframe_intrastat["WartoscFaktury"] = dataframe_intrastat["WartoscFaktury"].astype("int64")
-    dataframe_intrastat["WartoscStatystyczna"] = dataframe_intrastat["WartoscStatystyczna"].astype("int64")
+    dataframe_intrastat["RodzajTransakcji"] = dataframe_intrastat["RodzajTransakcji"].astype(
+        "int64")
+    dataframe_intrastat["KodTowarowy"] = dataframe_intrastat["KodTowarowy"].astype(
+        "int64")
+    dataframe_intrastat["MasaNetto"] = dataframe_intrastat["MasaNetto"].astype(
+        "int64")
+    dataframe_intrastat["IloscUzupelniajacaJm"] = dataframe_intrastat["IloscUzupelniajacaJm"].astype(
+        "int64")
+    dataframe_intrastat["WartoscFaktury"] = dataframe_intrastat["WartoscFaktury"].astype(
+        "int64")
+    dataframe_intrastat["WartoscStatystyczna"] = dataframe_intrastat["WartoscStatystyczna"].astype(
+        "int64")
 
     # cast types in info file
     dataframe_info["UC"] = dataframe_info["UC"].astype("int64")
@@ -64,9 +74,12 @@ def importf(intrastat_dir, db1_file, db2_file):
     dataframe_info["Miesiac"] = dataframe_info["Miesiac"].astype("int64")
     dataframe_info["Numer"] = dataframe_info["Numer"].astype("int64")
     dataframe_info["Wersja"] = dataframe_info["Wersja"].astype("int64")
-    dataframe_info["LacznaWartoscFaktur"] = dataframe_info["LacznaWartoscFaktur"].astype("int64")
-    dataframe_info["LacznaWartoscStatystyczna"] = dataframe_info["LacznaWartoscStatystyczna"].astype("int64")
-    dataframe_info["LacznaLiczbaPozycji"] = dataframe_info["LacznaLiczbaPozycji"].astype("int64")
+    dataframe_info["LacznaWartoscFaktur"] = dataframe_info["LacznaWartoscFaktur"].astype(
+        "int64")
+    dataframe_info["LacznaWartoscStatystyczna"] = dataframe_info["LacznaWartoscStatystyczna"].astype(
+        "int64")
+    dataframe_info["LacznaLiczbaPozycji"] = dataframe_info["LacznaLiczbaPozycji"].astype(
+        "int64")
 
     # save files
     dataframe_intrastat.to_excel(f"C:/Skrypty/Pomocnik/temp.xlsx", index=False)

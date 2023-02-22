@@ -1,21 +1,25 @@
+import sys
+import os
+
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMdiArea, QPushButton
 from PyQt5 import uic
 from PyQt5 import QtGui
-import sys
+
 from logic.settings import create_settings
 from widgets.intrastat import IntrastatWindow
 from widgets.invoice import InvoiceWindow
 from widgets.convert import ConvertWindow
 from widgets.settings import SettingsWindow
-import os
 # import pyi_splash # type: ignore
 
 basedir = os.path.dirname(__file__)
 
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
-        self.setWindowIcon(QtGui.QIcon(os.path.join(basedir, './imgs/helper.png')))
+        self.setWindowIcon(QtGui.QIcon(
+            os.path.join(basedir, './imgs/helper.png')))
 
         # load UI file
         uic.loadUi(os.path.join(basedir, "./ui/main.ui"), self)
@@ -41,7 +45,7 @@ class MainWindow(QMainWindow):
 
         # show main window
         self.show()
-       
+
     def add_window_intrastat(self):
         page = IntrastatWindow()
         subwindow = self.mdi.addSubWindow(page)
@@ -72,11 +76,11 @@ class MainWindow(QMainWindow):
 
 
 app = QApplication(sys.argv)
-File = open(os.path.join(basedir, "ui/style.qss"),'r')
+File = open(os.path.join(basedir, "ui/style.qss"), 'r')
 
 with File:
-	qss = File.read()
-	app.setStyleSheet(qss)
+    qss = File.read()
+    app.setStyleSheet(qss)
 
 
 MainWindow = MainWindow()

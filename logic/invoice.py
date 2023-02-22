@@ -1,5 +1,7 @@
-import pandas as pd
 from os import getlogin
+
+import pandas as pd
+
 
 def invoice(invoice_file, db_file):
     # get current user
@@ -9,7 +11,7 @@ def invoice(invoice_file, db_file):
     db = pd.read_csv(db_file, delimiter=';')
     db_KodTowarowy = list(db["KodTowarowy"])
     db_OpisTowaru = list(db["OpisTowaru"])
-    
+
     # make dataframe from Excel file
     frame = pd.read_excel(invoice_file)
 

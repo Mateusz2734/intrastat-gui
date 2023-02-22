@@ -1,22 +1,24 @@
+import os
+
 from PyQt5.QtWidgets import QComboBox, QMainWindow, QLabel, QPushButton, QFileDialog, QMessageBox
 from PyQt5.QtCore import QThread, Qt
+from PyQt5 import uic
+
 from workers.ExportWorker import ExportWorker
 from workers.ImportWorker import ImportWorker
 from logic.settings import read_settings
 from widgets.loader import Loader
-from PyQt5 import uic
-from os import getlogin
-import os
- 
+
 basedir = os.path.dirname(os.path.dirname(__file__))
 
+
 class IntrastatWindow(QMainWindow):
-    
+
     def __init__(self):
         super(IntrastatWindow, self).__init__()
         self.settings = read_settings()["intrastat"]
-        self.user = getlogin()
-        self.type = None    
+        self.user = os.getlogin()
+        self.type = None
         self.db_file = self.settings["db1"]
         self.db2_file = self.settings["db2"]
         self.intrastat_file = None
@@ -31,22 +33,22 @@ class IntrastatWindow(QMainWindow):
         self.btn_choose_file = self.findChild(QPushButton, "choose_file_btn")
         self.btn_choose_db2 = self.findChild(QPushButton, "choose_db2_btn")
         self.btn_ok = self.findChild(QPushButton, "btn_ok")
-        
+
         # define labels
         self.label_choose_db = self.findChild(QLabel, "choose_db_label")
         self.label_choose_file = self.findChild(QLabel, "choose_file_label")
         self.label_choose_db2 = self.findChild(QLabel, "choose_db2_label")
-        
+
         self.populate_labels()
 
-        #define other widgets
+        # define other widgets
         self.choose_type = self.findChild(QComboBox, "intrastat_choose_type")
 
         # disable file buttons
         self.btn_choose_db.setEnabled(False)
         self.btn_choose_file.setEnabled(False)
         self.btn_choose_db2.setEnabled(False)
-        
+
         # click handlers
         self.btn_choose_db.clicked.connect(self.choose_db_handler)
         self.btn_choose_db2.clicked.connect(self.choose_db2_handler)
@@ -61,38 +63,41 @@ class IntrastatWindow(QMainWindow):
         self.label_choose_db.setText(self.db_file)
         self.label_choose_db2.setText(self.db2_file)
 
-
     def choose_type_handler(self):
         if self.choose_type.currentText() != "Wybierz rodzaj Intrastatu":
             self.type = self.choose_type.currentText()
             self.btn_choose_db.setEnabled(True)
             self.btn_choose_file.setEnabled(True)
             self.btn_choose_db2.setEnabled(True)
-        else: 
+        else:
             self.btn_choose_db.setEnabled(False)
             self.btn_choose_file.setEnabled(False)
             self.btn_choose_db2.setEnabled(False)
 
     def choose_db_handler(self):
-        fpath = QFileDialog.getOpenFileName(self, "Wybierz bazę danych", f"C:/Users/{self.user}/Desktop", "Pliki CSV (*.csv)")
+        fpath = QFileDialog.getOpenFileName(
+            self, "Wybierz bazę danych", f"C:/Users/{self.user}/Desktop", "Pliki CSV (*.csv)")
         if fpath[0] != "":
             self.label_choose_db.setText(fpath[0])
             self.db_file = fpath[0]
 
     def choose_db2_handler(self):
-        fpath = QFileDialog.getOpenFileName(self, "Wybierz bazę kodów", f"C:/Users/{self.user}/Desktop", "Skoroszyt programu Excel  (*.xlsx)")
+        fpath = QFileDialog.getOpenFileName(
+            self, "Wybierz bazę kodów", f"C:/Users/{self.user}/Desktop", "Skoroszyt programu Excel  (*.xlsx)")
         if fpath[0] != "":
             self.label_choose_db2.setText(fpath[0])
             self.db2_file = fpath[0]
-    
-    def choose_file_handler(self): 
+
+    def choose_file_handler(self):
         if self.type == "Wywozowy":
-            fpath = QFileDialog.getOpenFileName(self, "Wybierz plik Intrastatu", f"C:/Users/{self.user}/Desktop", "Skoroszyt programu Excel  (*.xlsx)")
+            fpath = QFileDialog.getOpenFileName(
+                self, "Wybierz plik Intrastatu", f"C:/Users/{self.user}/Desktop", "Skoroszyt programu Excel  (*.xlsx)")
             if fpath[0] != "":
                 self.label_choose_file.setText(fpath[0])
                 self.intrastat_file = fpath[0]
         elif self.type == "Przywozowy":
-            fpath = QFileDialog.getExistingDirectory(self, "Wybierz folder z plikami .xml Intrastatu", f"C:/Users/{self.user}/Desktop")
+            fpath = QFileDialog.getExistingDirectory(
+                self, "Wybierz folder z plikami .xml Intrastatu", f"C:/Users/{self.user}/Desktop")
             if fpath != "":
                 self.label_choose_file.setText(fpath)
                 self.intrastat_file = fpath
@@ -100,7 +105,8 @@ class IntrastatWindow(QMainWindow):
     def runExportWorker(self):
         self.thread = QThread()
 
-        self.worker = ExportWorker(self.intrastat_file, self.db_file, self.db2_file)
+        self.worker = ExportWorker(
+            self.intrastat_file, self.db_file, self.db2_file)
 
         self.worker.moveToThread(self.thread)
 
@@ -117,7 +123,8 @@ class IntrastatWindow(QMainWindow):
     def runImportWorker(self):
         self.thread = QThread()
 
-        self.worker = ImportWorker(self.intrastat_file, self.db_file, self.db2_file)
+        self.worker = ImportWorker(
+            self.intrastat_file, self.db_file, self.db2_file)
 
         self.worker.moveToThread(self.thread)
 
@@ -134,7 +141,8 @@ class IntrastatWindow(QMainWindow):
     def show_message(self):
         msg = QMessageBox(self)
         msg.setWindowTitle("Gotowe!")
-        msg.setStyleSheet("QMessageBox {border: 2px solid #4891b4; border-radius:15px}")
+        msg.setStyleSheet(
+            "QMessageBox {border: 2px solid #4891b4; border-radius:15px}")
         msg.setText("Plik został przetworzony.")
         msg.setStandardButtons(QMessageBox.Ok)
         msg.setIcon(QMessageBox.Information)
@@ -143,7 +151,8 @@ class IntrastatWindow(QMainWindow):
 
     def show_warning(self):
         warn = QMessageBox(self)
-        warn.setStyleSheet("QMessageBox {border: 2px solid #4891b4; border-radius:15px}")
+        warn.setStyleSheet(
+            "QMessageBox {border: 2px solid #4891b4; border-radius:15px}")
         warn.setWindowTitle("Ups!")
         warn.setText("Proszę podać wszystkie dane i spróbowac ponownie.")
         warn.setStandardButtons(QMessageBox.Ok)

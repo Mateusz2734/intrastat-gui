@@ -1,12 +1,15 @@
+import os
+
 from PyQt5.QtWidgets import QComboBox, QMainWindow, QLabel, QPushButton, QFileDialog, QMessageBox
 from PyQt5.QtCore import QThread, Qt
+from PyQt5 import uic
+
 from workers.InvoiceWorker import InvoiceWorker
 from logic.settings import read_settings
 from widgets.loader import Loader
-from PyQt5 import uic
-import os
- 
+
 basedir = os.path.dirname(os.path.dirname(__file__))
+
 
 class InvoiceWindow(QMainWindow):
     def __init__(self):
@@ -25,13 +28,13 @@ class InvoiceWindow(QMainWindow):
         self.btn_choose_db = self.findChild(QPushButton, "choose_db_btn")
         self.btn_choose_file = self.findChild(QPushButton, "choose_file_btn")
         self.btn_ok = self.findChild(QPushButton, "btn_ok")
-        
+
         # define labels
         self.label_choose_db = self.findChild(QLabel, "choose_db_label")
         self.label_choose_file = self.findChild(QLabel, "choose_file_label")
 
         self.populate_labels()
-        
+
         # click handlers
         self.btn_choose_db.clicked.connect(self.choose_db_handler)
         self.btn_choose_file.clicked.connect(self.choose_file_handler)
@@ -42,13 +45,15 @@ class InvoiceWindow(QMainWindow):
         self.label_choose_db.setText(self.db_file)
 
     def choose_db_handler(self):
-        fpath = QFileDialog.getOpenFileName(self, "Wybierz bazę danych", f"C:/Users/{self.user}/Desktop", "Pliki CSV (*.csv)")
+        fpath = QFileDialog.getOpenFileName(
+            self, "Wybierz bazę danych", f"C:/Users/{self.user}/Desktop", "Pliki CSV (*.csv)")
         if fpath[0] != "":
             self.label_choose_db.setText(fpath[0])
             self.db_file = fpath[0]
-    
-    def choose_file_handler(self): 
-        fpath = QFileDialog.getOpenFileName(self, "Wybierz plik faktury", f"C:/Users/{self.user}/Desktop", "Pliki CSV (*.xls*)")
+
+    def choose_file_handler(self):
+        fpath = QFileDialog.getOpenFileName(
+            self, "Wybierz plik faktury", f"C:/Users/{self.user}/Desktop", "Pliki CSV (*.xls*)")
         if fpath[0] != "":
             self.label_choose_file.setText(fpath[0])
             self.invoice_file = fpath[0]
@@ -73,7 +78,8 @@ class InvoiceWindow(QMainWindow):
     def show_message(self):
         msg = QMessageBox(self)
         msg.setWindowTitle("Gotowe!")
-        msg.setStyleSheet("QMessageBox {border: 2px solid #4891b4; border-radius:15px}")
+        msg.setStyleSheet(
+            "QMessageBox {border: 2px solid #4891b4; border-radius:15px}")
         msg.setText("Plik został przetworzony.")
         msg.setStandardButtons(QMessageBox.Ok)
         msg.setIcon(QMessageBox.Information)
@@ -82,7 +88,8 @@ class InvoiceWindow(QMainWindow):
 
     def show_warning(self):
         warn = QMessageBox(self)
-        warn.setStyleSheet("QMessageBox {border: 2px solid #4891b4; border-radius:15px}")
+        warn.setStyleSheet(
+            "QMessageBox {border: 2px solid #4891b4; border-radius:15px}")
         warn.setWindowTitle("Ups!")
         warn.setText("Proszę podać wszystkie dane i spróbowac ponownie.")
         warn.setStandardButtons(QMessageBox.Ok)
@@ -97,7 +104,7 @@ class InvoiceWindow(QMainWindow):
         self.loader.hide()
 
     def ok_handler(self):
-        if (self.db_file  and self.invoice_file) is not None:
+        if (self.db_file and self.invoice_file) is not None:
             self.runInvoiceWorker()
         else:
             self.show_warning()
