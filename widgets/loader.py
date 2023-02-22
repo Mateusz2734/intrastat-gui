@@ -9,7 +9,7 @@ basedir = os.path.dirname(os.path.dirname(__file__))
 
 class Loader(QWidget):
     def __init__(self):
-        super(Loader, self).__init__()
+        super().__init__()
         self.resize(232, 148)
         self.label = QLabel(self)
         # self.setCentralWidget(self.label)

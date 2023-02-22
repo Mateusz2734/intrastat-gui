@@ -12,7 +12,7 @@ basedir = os.path.dirname(os.path.dirname(__file__))
 
 class ConvertWindow(QMainWindow):
     def __init__(self):
-        super(ConvertWindow, self).__init__()
+        super().__init__()
         self.xls_file = None
         self.user = os.getlogin()
 

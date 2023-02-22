@@ -13,7 +13,7 @@ basedir = os.path.dirname(os.path.dirname(__file__))
 
 class InvoiceWindow(QMainWindow):
     def __init__(self):
-        super(InvoiceWindow, self).__init__()
+        super().__init__()
         self.settings = read_settings()["invoice"]
         self.db_file = self.settings["db"]
         self.invoice_file = None

@@ -15,7 +15,7 @@ basedir = os.path.dirname(os.path.dirname(__file__))
 class IntrastatWindow(QMainWindow):
 
     def __init__(self):
-        super(IntrastatWindow, self).__init__()
+        super().__init__()
         self.settings = read_settings()["intrastat"]
         self.user = os.getlogin()
         self.type = None

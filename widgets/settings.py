@@ -19,7 +19,7 @@ basedir = os.path.dirname(os.path.dirname(__file__))
 
 class SettingsWindow(QMainWindow):
     def __init__(self):
-        super(SettingsWindow, self).__init__()
+        super().__init__()
         self.user = os.getlogin()
         self.path = "C:/Skrypty/Pomocnik/settings.json"
 
