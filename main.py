@@ -5,6 +5,7 @@ import sys
 from logic.settings import create_settings
 from widgets.intrastat import IntrastatWindow
 from widgets.invoice import InvoiceWindow
+from widgets.convert import ConvertWindow
 from widgets.settings import SettingsWindow
 import os
 # import pyi_splash # type: ignore
@@ -23,11 +24,13 @@ class MainWindow(QMainWindow):
         self.mdi = self.findChild(QMdiArea, "mdiArea")
         self.intrastat_btn = self.findChild(QPushButton, "intrastat_btn")
         self.invoice_btn = self.findChild(QPushButton, "invoice_btn")
+        self.convert_btn = self.findChild(QPushButton, "convert_btn")
         self.settings_btn = self.findChild(QPushButton, "settings_btn")
 
         # button click handlers
         self.intrastat_btn.clicked.connect(self.add_window_intrastat)
         self.invoice_btn.clicked.connect(self.add_window_invoice)
+        self.convert_btn.clicked.connect(self.add_window_convert)
         self.settings_btn.clicked.connect(self.add_window_settings)
 
         # create settings file
@@ -50,6 +53,13 @@ class MainWindow(QMainWindow):
         page = InvoiceWindow()
         subwindow = self.mdi.addSubWindow(page)
         subwindow.setWindowTitle("FAKTURA | Wprowadź informacje")
+        subwindow.show()
+        self.mdi.tileSubWindows()
+
+    def add_window_convert(self):
+        page = ConvertWindow()
+        subwindow = self.mdi.addSubWindow(page)
+        subwindow.setWindowTitle("ZMIANA PLIKU | Wprowadź informacje")
         subwindow.show()
         self.mdi.tileSubWindows()
 
