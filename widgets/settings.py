@@ -1,15 +1,16 @@
 import json
 import os
 
-from PyQt5.QtWidgets import QMainWindow, QPushButton, QMessageBox, QPlainTextEdit
-from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QMainWindow, QPushButton, QPlainTextEdit
 from PyQt5 import uic
+
+from widgets.BaseWidget import BaseWidget
 
 
 def is_json(candidate):
     try:
         json.loads(candidate)
-    except ValueError as e:
+    except ValueError:
         return False
     return True
 
@@ -17,7 +18,7 @@ def is_json(candidate):
 basedir = os.path.dirname(os.path.dirname(__file__))
 
 
-class SettingsWindow(QMainWindow):
+class SettingsWindow(BaseWidget):
     def __init__(self):
         super().__init__()
         self.user = os.getlogin()
@@ -47,28 +48,6 @@ class SettingsWindow(QMainWindow):
             json_data = json.dumps(json.loads(data), indent=4, sort_keys=True)
             with open(self.path, "w") as file:
                 file.write(json_data)
-                self.show_message()
+                self.show_message("Pomyślnie zapisano ustawienia.")
         else:
-            self.show_warning()
-
-    def show_warning(self):
-        warn = QMessageBox(self)
-        warn.setStyleSheet(
-            "QMessageBox {border: 2px solid #4891b4; border-radius:15px}")
-        warn.setWindowTitle("Ups!")
-        warn.setText("Nieprawidłowy format pliku .json")
-        warn.setStandardButtons(QMessageBox.Ok)
-        warn.setIcon(QMessageBox.Warning)
-        warn.setWindowFlag(Qt.FramelessWindowHint)
-        warn.exec()
-
-    def show_message(self):
-        msg = QMessageBox(self)
-        msg.setWindowTitle("Gotowe!")
-        msg.setStyleSheet(
-            "QMessageBox {border: 2px solid #4891b4; border-radius:15px}")
-        msg.setText("Pomyślnie zapisano ustawienia.")
-        msg.setStandardButtons(QMessageBox.Ok)
-        msg.setIcon(QMessageBox.Information)
-        msg.setWindowFlag(Qt.FramelessWindowHint)
-        msg.exec()
+            self.show_warning("Nieprawidłowa postać pliku .json")
