@@ -52,11 +52,21 @@ class ConvertWindow(BaseWidget):
 
         self.thread.started.connect(self.worker.run)
         self.worker.started.connect(self.show_loader)
+
+        # In case of error
+        self.worker.error.connect(self.hide_loader)
+        self.worker.error.connect(
+            lambda: self.show_error("Wystąpił błąd w trakcie przetwarzania pliku"))
+        self.worker.error.connect(self.thread.quit)
+        self.worker.error.connect(self.worker.deleteLater)
+
+        # If everything works fine
         self.worker.finished.connect(self.hide_loader)
         self.worker.finished.connect(
             lambda: self.show_message("Plik przetworzony pomyślnie."))
         self.worker.finished.connect(self.thread.quit)
         self.worker.finished.connect(self.worker.deleteLater)
+
         self.thread.finished.connect(self.thread.deleteLater)
 
         self.thread.start()

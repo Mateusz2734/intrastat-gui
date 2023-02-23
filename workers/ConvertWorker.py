@@ -10,8 +10,13 @@ class ConvertWorker(QObject):
 
     finished = pyqtSignal()
     started = pyqtSignal()
+    error = pyqtSignal()
 
     def run(self):
         self.started.emit()
-        convert(self.xls_file)
-        self.finished.emit()
+        try:
+            convert(self.xls_file)
+        except Exception:
+            self.error.emit()
+        else:
+            self.finished.emit()

@@ -11,8 +11,13 @@ class InvoiceWorker(QObject):
         
     finished = pyqtSignal()
     started = pyqtSignal()
+    error = pyqtSignal()
 
     def run(self):
         self.started.emit()
-        invoice(self.intrastat_file, self.db_file)
-        self.finished.emit()
+        try:
+            invoice(self.intrastat_file, self.db_file)
+        except Exception:
+            self.error.emit()
+        else:
+            self.finished.emit()

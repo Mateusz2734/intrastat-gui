@@ -12,8 +12,13 @@ class ExportWorker(QObject):
 
     finished = pyqtSignal()
     started = pyqtSignal()
+    error = pyqtSignal()
 
     def run(self):
         self.started.emit()
-        exportf(self.intrastat_file, self.db_file, self.db2_file)
-        self.finished.emit()
+        try:
+            exportf(self.intrastat_file, self.db_file, self.db2_file)
+        except Exception:
+            self.error.emit()
+        else:
+            self.finished.emit()
