@@ -11,7 +11,7 @@ def exportf(intrastat_file, db1_file, db2_file):
     frame = pd.read_excel(intrastat_file)
 
     # import first database and define some constants
-    db1 = pd.read_csv(db1_file, delimiter=';')
+    db1 = pd.read_csv(db1_file, delimiter=';', encoding='cp1250')
     db_KodTowarowy = list(db1["KodTowarowy"])
     db_OpisTowaru = list(db1["OpisTowaru"])
 
