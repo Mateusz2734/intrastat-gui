@@ -1,12 +1,11 @@
 import os
 
-from PyQt5.QtWidgets import QComboBox, QMainWindow, QLabel, QPushButton, QFileDialog, QMessageBox
-from PyQt5.QtCore import QThread, Qt
+from PyQt5.QtWidgets import QLabel, QPushButton, QFileDialog
+from PyQt5.QtCore import QThread
 from PyQt5 import uic
 
 from workers.InvoiceWorker import InvoiceWorker
 from logic.settings import read_settings
-from widgets.loader import Loader
 from widgets.BaseWidget import BaseWidget
 
 basedir = os.path.dirname(os.path.dirname(__file__))

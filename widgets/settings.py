@@ -1,7 +1,7 @@
 import json
 import os
 
-from PyQt5.QtWidgets import QMainWindow, QPushButton, QPlainTextEdit
+from PyQt5.QtWidgets import QPushButton, QPlainTextEdit
 from PyQt5 import uic
 
 from widgets.BaseWidget import BaseWidget

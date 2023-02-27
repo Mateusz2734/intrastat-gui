@@ -5,7 +5,6 @@ from PyQt5.QtCore import QThread
 from PyQt5 import uic
 
 from workers.ConvertWorker import ConvertWorker
-from widgets.loader import Loader
 from widgets.BaseWidget import BaseWidget
 
 basedir = os.path.dirname(os.path.dirname(__file__))
