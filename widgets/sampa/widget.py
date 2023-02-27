@@ -1,26 +1,27 @@
 import os
+import os.path as p
 
 from PyQt5.QtWidgets import QLabel, QPushButton, QFileDialog
 from PyQt5.QtCore import QThread
 from PyQt5 import uic
 
-from workers.InvoiceWorker import InvoiceWorker
-from logic.settings import read_settings
+from widgets.sampa.worker import SampaWorker
+from widgets.settings.logic import read_settings
 from widgets.BaseWidget import BaseWidget
 
-basedir = os.path.dirname(os.path.dirname(__file__))
+basedir = p.dirname(p.dirname(p.dirname(__file__)))
 
 
-class InvoiceWindow(BaseWidget):
+class SampaWindow(BaseWidget):
     def __init__(self):
         super().__init__()
-        self.settings = read_settings()["invoice"]
+        self.settings = read_settings()["sampa"]
         self.db_file = self.settings["db"]
-        self.invoice_file = None
+        self.sampa_file = None
         self.user = os.getlogin()
 
         # load UI file
-        uic.loadUi(os.path.join(basedir, "./ui/invoice.ui"), self)
+        uic.loadUi(p.join(basedir, "./style/sampa.ui"), self)
 
         # define buttons
         self.btn_choose_db = self.findChild(QPushButton, "choose_db_btn")
@@ -39,27 +40,27 @@ class InvoiceWindow(BaseWidget):
         self.btn_ok.clicked.connect(self.ok_handler)
 
     def populate_labels(self):
-        self.label_choose_file.setText(self.invoice_file)
+        self.label_choose_file.setText(self.sampa_file)
         self.label_choose_db.setText(self.db_file)
 
     def choose_db_handler(self):
         fpath = QFileDialog.getOpenFileName(
-            self, "Wybierz bazę danych", f"C:/Users/{self.user}/Desktop", "Pliki CSV (*.csv)")
+            self, "Wybierz bazę danych", f"C:/Users/{self.user}/Desktop", "Pliki Excel (*.xlsx)")
         if fpath[0] != "":
             self.label_choose_db.setText(fpath[0])
             self.db_file = fpath[0]
 
     def choose_file_handler(self):
         fpath = QFileDialog.getOpenFileName(
-            self, "Wybierz plik faktury", f"C:/Users/{self.user}/Desktop", "Pliki CSV (*.xls*)")
+            self, "Wybierz plik faktury", f"C:/Users/{self.user}/Desktop", "Pliki Excel (*.xlsx)")
         if fpath[0] != "":
             self.label_choose_file.setText(fpath[0])
-            self.invoice_file = fpath[0]
+            self.sampa_file = fpath[0]
 
     def runInvoiceWorker(self):
         self.thread = QThread()
 
-        self.worker = InvoiceWorker(self.invoice_file, self.db_file)
+        self.worker = SampaWorker(self.sampa_file, self.db_file)
 
         self.worker.moveToThread(self.thread)
 
@@ -85,7 +86,7 @@ class InvoiceWindow(BaseWidget):
         self.thread.start()
 
     def ok_handler(self):
-        if (self.db_file and self.invoice_file) is not None:
+        if (self.db_file and self.sampa_file) is not None:
             self.runInvoiceWorker()
         else:
             self.show_warning("Proszę uzupełnić wszystkie dane!")

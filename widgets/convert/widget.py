@@ -1,13 +1,14 @@
 import os
+import os.path as p
 
 from PyQt5.QtWidgets import QLabel, QPushButton, QFileDialog
 from PyQt5.QtCore import QThread
 from PyQt5 import uic
 
-from workers.ConvertWorker import ConvertWorker
+from widgets.convert.worker import ConvertWorker
 from widgets.BaseWidget import BaseWidget
 
-basedir = os.path.dirname(os.path.dirname(__file__))
+basedir = p.dirname(p.dirname(p.dirname(__file__)))
 
 
 class ConvertWindow(BaseWidget):
@@ -17,7 +18,7 @@ class ConvertWindow(BaseWidget):
         self.user = os.getlogin()
 
         # load UI file
-        uic.loadUi(os.path.join(basedir, "./ui/convert.ui"), self)
+        uic.loadUi(os.path.join(basedir, "./style/convert.ui"), self)
 
         # define buttons
         self.btn_choose_file = self.findChild(QPushButton, "choose_file_btn")

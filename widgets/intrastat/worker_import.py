@@ -1,13 +1,14 @@
 from PyQt5.QtCore import QObject, pyqtSignal
 
-from logic.sampa import sampa
+from widgets.intrastat.logic_import import importf
 
 
-class SampaWorker(QObject):
-    def __init__(self, xls_file, db_file):
+class ImportWorker(QObject):
+    def __init__(self, intrastat_file, db_file, db2_file):
         super().__init__()
-        self.xls_file = xls_file
+        self.intrastat_file = intrastat_file
         self.db_file = db_file
+        self.db2_file = db2_file
 
     finished = pyqtSignal()
     started = pyqtSignal()
@@ -16,7 +17,7 @@ class SampaWorker(QObject):
     def run(self):
         self.started.emit()
         try:
-            sampa(self.xls_file, self.db_file)
+            importf(self.intrastat_file, self.db_file, self.db2_file)
         except Exception:
             self.error.emit()
         else:

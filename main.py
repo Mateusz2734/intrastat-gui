@@ -5,12 +5,12 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QMdiArea, QPushButton
 from PyQt5 import uic
 from PyQt5 import QtGui
 
-from logic.settings import create_settings
-from widgets.intrastat import IntrastatWindow
-from widgets.invoice import InvoiceWindow
-from widgets.convert import ConvertWindow
-from widgets.sampa import SampaWindow
-from widgets.settings import SettingsWindow
+from widgets.settings.logic import create_settings
+from widgets.intrastat.widget import IntrastatWindow
+from widgets.invoice.widget import InvoiceWindow
+from widgets.convert.widget import ConvertWindow
+from widgets.sampa.widget import SampaWindow
+from widgets.settings.widget import SettingsWindow
 # import pyi_splash # type: ignore
 
 basedir = os.path.dirname(__file__)
@@ -23,7 +23,7 @@ class MainWindow(QMainWindow):
             os.path.join(basedir, './imgs/helper.png')))
 
         # load UI file
-        uic.loadUi(os.path.join(basedir, "./ui/main.ui"), self)
+        uic.loadUi(os.path.join(basedir, "./style/main.ui"), self)
 
         # define widgets and buttons
         self.mdi = self.findChild(QMdiArea, "mdiArea")
@@ -86,7 +86,7 @@ class MainWindow(QMainWindow):
 
 
 app = QApplication(sys.argv)
-File = open(os.path.join(basedir, "ui/style.qss"), 'r')
+File = open(os.path.join(basedir, "style/style.qss"), 'r')
 
 with File:
     qss = File.read()

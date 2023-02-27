@@ -1,14 +1,12 @@
 from PyQt5.QtCore import QObject, pyqtSignal
 
-from logic.importf import importf
+from widgets.convert.logic import convert
 
 
-class ImportWorker(QObject):
-    def __init__(self, intrastat_file, db_file, db2_file):
+class ConvertWorker(QObject):
+    def __init__(self, xls_file):
         super().__init__()
-        self.intrastat_file = intrastat_file
-        self.db_file = db_file
-        self.db2_file = db2_file
+        self.xls_file = xls_file
 
     finished = pyqtSignal()
     started = pyqtSignal()
@@ -17,7 +15,7 @@ class ImportWorker(QObject):
     def run(self):
         self.started.emit()
         try:
-            importf(self.intrastat_file, self.db_file, self.db2_file)
+            convert(self.xls_file)
         except Exception:
             self.error.emit()
         else:

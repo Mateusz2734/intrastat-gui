@@ -1,13 +1,14 @@
 from PyQt5.QtCore import QObject, pyqtSignal
 
-from logic.convert_to_xlsx import convert
+from widgets.invoice.logic import invoice
 
 
-class ConvertWorker(QObject):
-    def __init__(self, xls_file):
+class InvoiceWorker(QObject):
+    def __init__(self, intrastat_file, db_file):
         super().__init__()
-        self.xls_file = xls_file
-
+        self.intrastat_file = intrastat_file
+        self.db_file = db_file
+        
     finished = pyqtSignal()
     started = pyqtSignal()
     error = pyqtSignal()
@@ -15,7 +16,7 @@ class ConvertWorker(QObject):
     def run(self):
         self.started.emit()
         try:
-            convert(self.xls_file)
+            invoice(self.intrastat_file, self.db_file)
         except Exception:
             self.error.emit()
         else:
