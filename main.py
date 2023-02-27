@@ -9,6 +9,7 @@ from logic.settings import create_settings
 from widgets.intrastat import IntrastatWindow
 from widgets.invoice import InvoiceWindow
 from widgets.convert import ConvertWindow
+from widgets.sampa import SampaWindow
 from widgets.settings import SettingsWindow
 # import pyi_splash # type: ignore
 
@@ -29,12 +30,14 @@ class MainWindow(QMainWindow):
         self.intrastat_btn = self.findChild(QPushButton, "intrastat_btn")
         self.invoice_btn = self.findChild(QPushButton, "invoice_btn")
         self.convert_btn = self.findChild(QPushButton, "convert_btn")
+        self.sampa_btn = self.findChild(QPushButton, "sampa_btn")
         self.settings_btn = self.findChild(QPushButton, "settings_btn")
 
         # button click handlers
         self.intrastat_btn.clicked.connect(self.add_window_intrastat)
         self.invoice_btn.clicked.connect(self.add_window_invoice)
         self.convert_btn.clicked.connect(self.add_window_convert)
+        self.sampa_btn.clicked.connect(self.add_window_sampa)
         self.settings_btn.clicked.connect(self.add_window_settings)
 
         # create settings file
@@ -64,6 +67,13 @@ class MainWindow(QMainWindow):
         page = ConvertWindow()
         subwindow = self.mdi.addSubWindow(page)
         subwindow.setWindowTitle("ZMIANA PLIKU | Wprowadź informacje")
+        subwindow.show()
+        self.mdi.tileSubWindows()
+
+    def add_window_sampa(self):
+        page = SampaWindow()
+        subwindow = self.mdi.addSubWindow(page)
+        subwindow.setWindowTitle("SAMPA | Wprowadź informacje")
         subwindow.show()
         self.mdi.tileSubWindows()
 
