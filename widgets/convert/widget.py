@@ -18,7 +18,7 @@ class ConvertWindow(BaseWidget):
         self.user = os.getlogin()
 
         # load UI file
-        uic.loadUi(os.path.join(basedir, "./style/convert.ui"), self)
+        uic.loadUi(p.join(basedir, p.normpath("./style/convert.ui")), self)
 
         # define buttons
         self.btn_choose_file = self.findChild(QPushButton, "choose_file_btn")

@@ -26,7 +26,7 @@ class SettingsWindow(BaseWidget):
         self.path = "C:/Skrypty/Pomocnik/settings.json"
 
         # load UI file
-        uic.loadUi(p.join(basedir, "./style/settings.ui"), self)
+        uic.loadUi(p.join(basedir, p.normpath("./style/settings.ui")), self)
 
         # define widgets
         self.btn_ok = self.findChild(QPushButton, "btn_ok")

@@ -21,7 +21,7 @@ class SampaWindow(BaseWidget):
         self.user = os.getlogin()
 
         # load UI file
-        uic.loadUi(p.join(basedir, "./style/sampa.ui"), self)
+        uic.loadUi(p.join(basedir, p.normpath("./style/sampa.ui")), self)
 
         # define buttons
         self.btn_choose_db = self.findChild(QPushButton, "choose_db_btn")

@@ -26,7 +26,7 @@ class IntrastatWindow(BaseWidget):
         self.intrastat_file = None
 
         # load UI file
-        uic.loadUi(os.path.join(basedir, "./style/intrastat.ui"), self)
+        uic.loadUi(p.join(basedir, p.normpath("./style/intrastat.ui")), self)
 
         # define buttons
         self.btn_choose_db = self.findChild(QPushButton, "choose_db_btn")

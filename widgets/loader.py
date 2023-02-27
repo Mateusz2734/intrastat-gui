@@ -1,4 +1,5 @@
 import os
+import os.path as p
 
 from PyQt5.QtWidgets import QLabel, QWidget
 from PyQt5.QtCore import Qt, QSize
@@ -12,14 +13,13 @@ class Loader(QWidget):
         super().__init__()
         self.resize(232, 148)
         self.label = QLabel(self)
-        # self.setCentralWidget(self.label)
         self.label.setMinimumSize(QSize(232, 148))
         self.label.setMaximumSize(QSize(232, 148))
         self.setWindowFlag(Qt.FramelessWindowHint)
         self.setWindowFlag(Qt.WindowStaysOnTopHint)
         self.setStyleSheet("QLabel {background-color: #242424}")
 
-        self.movie = QMovie(os.path.join(basedir, "imgs\loader.gif"))
+        self.movie = QMovie(p.join(basedir, p.normpath("imgs\loader.gif")))
         self.label.setMovie(self.movie)
 
         self.movie.start()

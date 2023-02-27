@@ -21,7 +21,7 @@ class InvoiceWindow(BaseWidget):
         self.user = os.getlogin()
 
         # load UI file
-        uic.loadUi(os.path.join(basedir, "./style/invoice.ui"), self)
+        uic.loadUi(p.join(basedir, p.normpath("./style/invoice.ui")), self)
 
         # define buttons
         self.btn_choose_db = self.findChild(QPushButton, "choose_db_btn")
