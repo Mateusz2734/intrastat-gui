@@ -14,7 +14,7 @@ basedir = os.path.dirname(os.path.dirname(__file__))
 class SampaWindow(BaseWidget):
     def __init__(self):
         super().__init__()
-        self.settings = read_settings()["sampa"] # TODO 1: Add new part to the settings
+        self.settings = read_settings()["sampa"]
         self.db_file = self.settings["db"]
         self.sampa_file = None
         self.user = os.getlogin()

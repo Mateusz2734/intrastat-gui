@@ -2,7 +2,6 @@ from PyQt5.QtCore import QObject, pyqtSignal
 
 from logic.sampa import sampa
 
-import traceback
 
 class SampaWorker(QObject):
     def __init__(self, xls_file, db_file):
