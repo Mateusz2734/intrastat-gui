@@ -1,5 +1,8 @@
 import sys
 import os
+import logging
+import logging.config
+
 
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMdiArea, QPushButton
 from PyQt5 import uic
@@ -14,6 +17,8 @@ from widgets.settings.widget import SettingsWindow
 # import pyi_splash # type: ignore
 
 basedir = os.path.dirname(__file__)
+logging.config.fileConfig(os.path.join(basedir, "./log/logging.conf"))
+log = logging.getLogger(__name__)
 
 
 class MainWindow(QMainWindow):
