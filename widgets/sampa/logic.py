@@ -16,7 +16,7 @@ def sampa(sampa_file, db_file):
     frame.rename(columns={'Unnamed: 4': 'Kod dodatkowy'}, inplace=True)
 
     # import database and define some constants
-    db = pd.read_excel(db_file)
+    db = pd.read_excel(db_file, converters={"Kod dodatkowy": str})
     db_KodTowaru = list(db["Kod towaru"])
     db_NazwaTowaru = list(db["Nazwa towaru"])
     db_KodTaryfy = list(db["Kod taryfy celnej"])

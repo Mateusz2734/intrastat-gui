@@ -1,5 +1,6 @@
 import json
 import os
+import os.path as p
 
 from PyQt5.QtWidgets import QPushButton, QPlainTextEdit
 from PyQt5 import uic
@@ -15,7 +16,7 @@ def is_json(candidate):
     return True
 
 
-basedir = os.path.dirname(os.path.dirname(__file__))
+basedir = p.dirname(p.dirname(p.dirname(__file__)))
 
 
 class SettingsWindow(BaseWidget):
@@ -25,7 +26,7 @@ class SettingsWindow(BaseWidget):
         self.path = "C:/Skrypty/Pomocnik/settings.json"
 
         # load UI file
-        uic.loadUi(os.path.join(basedir, "./ui/settings.ui"), self)
+        uic.loadUi(p.join(basedir, p.normpath("./style/settings.ui")), self)
 
         # define widgets
         self.btn_ok = self.findChild(QPushButton, "btn_ok")

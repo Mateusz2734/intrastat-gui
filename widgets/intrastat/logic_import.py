@@ -4,7 +4,7 @@ import xml.etree.ElementTree as Et
 
 import pandas as pd
 
-from logic import exportf
+from widgets.intrastat import logic_export
 
 
 def importf(intrastat_dir, db1_file, db2_file):
@@ -85,6 +85,6 @@ def importf(intrastat_dir, db1_file, db2_file):
     dataframe_intrastat.to_excel(f"C:/Skrypty/Pomocnik/temp.xlsx", index=False)
     dataframe_info.to_excel(f"C:/Users/{user}/Desktop/info.xlsx", index=False)
 
-    exportf.exportf(f"C:/Skrypty/Pomocnik/temp.xlsx", db1_file, db2_file)
+    logic_export.exportf(f"C:/Skrypty/Pomocnik/temp.xlsx", db1_file, db2_file)
 
     os.remove(f"C:/Skrypty/Pomocnik/temp.xlsx")

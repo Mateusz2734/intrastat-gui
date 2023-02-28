@@ -1,6 +1,6 @@
 from PyQt5.QtCore import QObject, pyqtSignal
 
-from logic.exportf import exportf
+from widgets.intrastat.logic_export import exportf
 
 
 class ExportWorker(QObject):

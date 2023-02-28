@@ -1,15 +1,17 @@
 import os
+import os.path as p
 
 from PyQt5.QtWidgets import QComboBox, QLabel, QPushButton, QFileDialog
 from PyQt5.QtCore import QThread
 from PyQt5 import uic
 
-from workers.ExportWorker import ExportWorker
-from workers.ImportWorker import ImportWorker
-from logic.settings import read_settings
+from widgets.intrastat.worker_export import ExportWorker
+from widgets.intrastat.worker_import import ImportWorker
+from widgets.settings.logic import read_settings
 from widgets.BaseWidget import BaseWidget
 
-basedir = os.path.dirname(os.path.dirname(__file__))
+basedir = p.dirname(p.dirname(p.dirname(__file__)))
+
 
 
 class IntrastatWindow(BaseWidget):
@@ -24,7 +26,7 @@ class IntrastatWindow(BaseWidget):
         self.intrastat_file = None
 
         # load UI file
-        uic.loadUi(os.path.join(basedir, "./ui/intrastat.ui"), self)
+        uic.loadUi(p.join(basedir, p.normpath("./style/intrastat.ui")), self)
 
         # define buttons
         self.btn_choose_db = self.findChild(QPushButton, "choose_db_btn")

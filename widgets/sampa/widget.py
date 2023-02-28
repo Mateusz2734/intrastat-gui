@@ -1,14 +1,15 @@
 import os
+import os.path as p
 
 from PyQt5.QtWidgets import QLabel, QPushButton, QFileDialog
 from PyQt5.QtCore import QThread
 from PyQt5 import uic
 
-from workers.SampaWorker import SampaWorker
-from logic.settings import read_settings
+from widgets.sampa.worker import SampaWorker
+from widgets.settings.logic import read_settings
 from widgets.BaseWidget import BaseWidget
 
-basedir = os.path.dirname(os.path.dirname(__file__))
+basedir = p.dirname(p.dirname(p.dirname(__file__)))
 
 
 class SampaWindow(BaseWidget):
@@ -20,7 +21,7 @@ class SampaWindow(BaseWidget):
         self.user = os.getlogin()
 
         # load UI file
-        uic.loadUi(os.path.join(basedir, "./ui/sampa.ui"), self)
+        uic.loadUi(p.join(basedir, p.normpath("./style/sampa.ui")), self)
 
         # define buttons
         self.btn_choose_db = self.findChild(QPushButton, "choose_db_btn")
