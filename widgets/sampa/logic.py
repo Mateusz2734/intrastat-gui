@@ -11,8 +11,9 @@ def sampa(sampa_file, db_file):
     # get current user
     user = os.getlogin()
 
-    # make dataframe from .xlsx file
+    # make dataframe from .xlsx file and set default value on column 4
     frame = pd.read_excel(sampa_file)
+    frame['Unnamed: 4'] = False
     frame.rename(columns={'Unnamed: 4': 'Kod dodatkowy'}, inplace=True)
 
     # import database and define some constants
