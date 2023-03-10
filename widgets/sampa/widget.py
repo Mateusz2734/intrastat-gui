@@ -15,8 +15,11 @@ basedir = p.dirname(p.dirname(p.dirname(__file__)))
 class SampaWindow(BaseWidget):
     def __init__(self):
         super().__init__()
-        self.settings = read_settings()["sampa"]
-        self.db_file = self.settings["db"]
+        try:
+            self.settings = read_settings()["sampa"]
+            self.db_file = self.settings["db"]
+        except Exception:
+            self.db_file= None
         self.sampa_file = None
         self.user = os.getlogin()
 

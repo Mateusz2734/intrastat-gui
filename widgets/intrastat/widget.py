@@ -18,11 +18,15 @@ class IntrastatWindow(BaseWidget):
 
     def __init__(self):
         super().__init__()
-        self.settings = read_settings()["intrastat"]
         self.user = os.getlogin()
         self.type = None
-        self.db_file = self.settings["db1"]
-        self.db2_file = self.settings["db2"]
+        try:
+            self.settings = read_settings()["intrastat"]
+            self.db_file = self.settings["db1"]
+            self.db2_file = self.settings["db2"]
+        except Exception:
+            self.db_file = None
+            self.db2_file = None
         self.intrastat_file = None
 
         # load UI file

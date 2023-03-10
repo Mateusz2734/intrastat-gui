@@ -38,10 +38,13 @@ class SettingsWindow(BaseWidget):
 
     # load data from .json file
     def load_data(self):
-        with open(self.path, "r") as file:
-            data = json.load(file)
-            self.editor.setPlainText(json.dumps(
-                data, indent=4, sort_keys=True))
+        try:
+            with open(self.path, "r") as file:
+                data = json.load(file)
+                self.editor.setPlainText(json.dumps(
+                    data, indent=4, sort_keys=True))
+        except Exception:
+            self.show_error("Nie udało się otworzyć pliku.")
 
     def save_data(self):
         data = self.editor.toPlainText()
