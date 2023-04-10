@@ -48,14 +48,14 @@ class InvoiceWindow(BaseWidget):
 
     def choose_db_handler(self):
         fpath = QFileDialog.getOpenFileName(
-            self, "Wybierz bazę danych", f"C:/Users/{self.user}/Desktop", "Pliki CSV (*.csv)")
+            self, "Wybierz bazę danych", f"C:/Users/{self.user}/Desktop", "Skoroszyt programu Excel (*.xlsx)")
         if fpath[0] != "":
             self.label_choose_db.setText(fpath[0])
             self.db_file = fpath[0]
 
     def choose_file_handler(self):
         fpath = QFileDialog.getOpenFileName(
-            self, "Wybierz plik faktury", f"C:/Users/{self.user}/Desktop", "Pliki CSV (*.xls*)")
+            self, "Wybierz plik faktury", f"C:/Users/{self.user}/Desktop", "Skoroszyt programu Excel (*.xls*)")
         if fpath[0] != "":
             self.label_choose_file.setText(fpath[0])
             self.invoice_file = fpath[0]

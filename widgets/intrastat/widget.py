@@ -80,7 +80,7 @@ class IntrastatWindow(BaseWidget):
 
     def choose_db_handler(self):
         fpath = QFileDialog.getOpenFileName(
-            self, "Wybierz bazę danych", f"C:/Users/{self.user}/Desktop", "Pliki CSV (*.csv)")
+            self, "Wybierz bazę danych", f"C:/Users/{self.user}/Desktop", "Skoroszyt programu Excel  (*.xlsx)")
         if fpath[0] != "":
             self.label_choose_db.setText(fpath[0])
             self.db_file = fpath[0]

@@ -1,14 +1,16 @@
-from os import getlogin
+import os
 
 import pandas as pd
 
 
 def invoice(invoice_file, db_file):
+    name = os.path.basename(invoice_file).split(".")[0]
+    
     # get current user
-    user = getlogin()
+    user = os.getlogin()
 
     # open database and define constants
-    db = pd.read_csv(db_file, delimiter=';')
+    db = pd.read_excel(db_file)
     db_KodTowarowy = list(db["KodTowarowy"])
     db_OpisTowaru = list(db["OpisTowaru"])
 
@@ -26,4 +28,4 @@ def invoice(invoice_file, db_file):
             i = db_KodTowarowy.index(Taryfa)
             frame.loc[index, 'Taryfa'] = db_KodTowarowy[i]
             frame.loc[index, 'Nazwa'] = db_OpisTowaru[i]
-    frame.to_excel(f"C:/Users/{user}/Desktop/gotowe.xlsx", index=False)
+    frame.to_excel(f"C:/Users/{user}/Desktop/{name}-gotowy.xlsx", index=False)
