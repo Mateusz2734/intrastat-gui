@@ -13,7 +13,9 @@ from widgets.intrastat.widget import IntrastatWindow
 from widgets.invoice.widget import InvoiceWindow
 from widgets.convert.widget import ConvertWindow
 from widgets.sampa.widget import SampaWindow
+from widgets.desha.widget import DeshaWindow
 from widgets.settings.widget import SettingsWindow
+
 # import pyi_splash # type: ignore
 
 basedir = os.path.dirname(__file__)
@@ -24,8 +26,7 @@ log = logging.getLogger(__name__)
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
-        self.setWindowIcon(QtGui.QIcon(
-            os.path.join(basedir, './imgs/helper.png')))
+        self.setWindowIcon(QtGui.QIcon(os.path.join(basedir, "./imgs/helper.png")))
 
         # load UI file
         uic.loadUi(os.path.join(basedir, "./style/main.ui"), self)
@@ -36,6 +37,7 @@ class MainWindow(QMainWindow):
         self.invoice_btn = self.findChild(QPushButton, "invoice_btn")
         self.convert_btn = self.findChild(QPushButton, "convert_btn")
         self.sampa_btn = self.findChild(QPushButton, "sampa_btn")
+        self.desha_btn = self.findChild(QPushButton, "desha_btn")
         self.settings_btn = self.findChild(QPushButton, "settings_btn")
 
         # button click handlers
@@ -43,6 +45,7 @@ class MainWindow(QMainWindow):
         self.invoice_btn.clicked.connect(self.add_window_invoice)
         self.convert_btn.clicked.connect(self.add_window_convert)
         self.sampa_btn.clicked.connect(self.add_window_sampa)
+        self.desha_btn.clicked.connect(self.add_window_desha)
         self.settings_btn.clicked.connect(self.add_window_settings)
 
         # create settings file
@@ -82,6 +85,13 @@ class MainWindow(QMainWindow):
         subwindow.show()
         self.mdi.tileSubWindows()
 
+    def add_window_desha(self):
+        page = DeshaWindow()
+        subwindow = self.mdi.addSubWindow(page)
+        subwindow.setWindowTitle("DESHA | Wprowadź informacje")
+        subwindow.show()
+        self.mdi.tileSubWindows()
+
     def add_window_settings(self):
         page = SettingsWindow()
         subwindow = self.mdi.addSubWindow(page)
@@ -91,7 +101,7 @@ class MainWindow(QMainWindow):
 
 
 app = QApplication(sys.argv)
-File = open(os.path.join(basedir, "style/style.qss"), 'r')
+File = open(os.path.join(basedir, "style/style.qss"), "r")
 
 with File:
     qss = File.read()
