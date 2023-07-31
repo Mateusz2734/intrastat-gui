@@ -68,7 +68,7 @@ class DeshaWindow(BaseWidget):
             self.label_choose_file.setText(fpath[0])
             self.sampa_file = fpath[0]
 
-    def runInvoiceWorker(self):
+    def runDeshaWorker(self):
         self.thread = QThread()
 
         self.worker = DeshaWorker(self.sampa_file, self.db_file)
@@ -100,6 +100,6 @@ class DeshaWindow(BaseWidget):
 
     def ok_handler(self):
         if (self.db_file and self.sampa_file) is not None:
-            self.runInvoiceWorker()
+            self.runDeshaWorker()
         else:
             self.show_warning("Proszę uzupełnić wszystkie dane!")
