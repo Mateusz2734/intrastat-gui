@@ -1,3 +1,4 @@
+from typing import Type
 import sys
 import os
 import logging
@@ -15,12 +16,22 @@ from widgets.convert.widget import ConvertWindow
 from widgets.sampa.widget import SampaWindow
 from widgets.desha.widget import DeshaWindow
 from widgets.settings.widget import SettingsWindow
+from widgets.BaseWidget import BaseWidget
 
 # import pyi_splash # type: ignore
 
 basedir = os.path.dirname(__file__)
 logging.config.fileConfig(os.path.join(basedir, "./log/logging.conf"))
 log = logging.getLogger(__name__)
+
+
+class MESSAGES:
+    INTRASTAT = "INTRASTAT | Wprowadź informacje"
+    INVOICE = "FAKTURA | Wprowadź informacje"
+    CONVERT = "ZMIANA PLIKU | Wprowadź informacje"
+    SAMPA = "SAMPA | Wprowadź informacje"
+    DESHA = "DESHA | Wprowadź informacje"
+    SETTINGS = "USTAWIENIA | Zmień domyślne wartości"
 
 
 class MainWindow(QMainWindow):
@@ -41,12 +52,24 @@ class MainWindow(QMainWindow):
         self.settings_btn = self.findChild(QPushButton, "settings_btn")
 
         # button click handlers
-        self.intrastat_btn.clicked.connect(self.add_window_intrastat)
-        self.invoice_btn.clicked.connect(self.add_window_invoice)
-        self.convert_btn.clicked.connect(self.add_window_convert)
-        self.sampa_btn.clicked.connect(self.add_window_sampa)
-        self.desha_btn.clicked.connect(self.add_window_desha)
-        self.settings_btn.clicked.connect(self.add_window_settings)
+        self.intrastat_btn.clicked.connect(
+            lambda: self.add_window(IntrastatWindow, MESSAGES.INTRASTAT)
+        )
+        self.invoice_btn.clicked.connect(
+            lambda: self.add_window(InvoiceWindow, MESSAGES.INVOICE)
+        )
+        self.convert_btn.clicked.connect(
+            lambda: self.add_window(ConvertWindow, MESSAGES.CONVERT)
+        )
+        self.sampa_btn.clicked.connect(
+            lambda: self.add_window(SampaWindow, MESSAGES.SAMPA)
+        )
+        self.desha_btn.clicked.connect(
+            lambda: self.add_window(DeshaWindow, MESSAGES.DESHA)
+        )
+        self.settings_btn.clicked.connect(
+            lambda: self.add_window(SettingsWindow, MESSAGES.SETTINGS)
+        )
 
         # create settings file
         create_settings()
@@ -57,45 +80,10 @@ class MainWindow(QMainWindow):
         # show main window
         self.show()
 
-    def add_window_intrastat(self):
-        page = IntrastatWindow()
+    def add_window(self, window: Type[BaseWidget], msg: str):
+        page = window()
         subwindow = self.mdi.addSubWindow(page)
-        subwindow.setWindowTitle("INTRASTAT | Wprowadź informacje")
-        subwindow.show()
-        self.mdi.tileSubWindows()
-
-    def add_window_invoice(self):
-        page = InvoiceWindow()
-        subwindow = self.mdi.addSubWindow(page)
-        subwindow.setWindowTitle("FAKTURA | Wprowadź informacje")
-        subwindow.show()
-        self.mdi.tileSubWindows()
-
-    def add_window_convert(self):
-        page = ConvertWindow()
-        subwindow = self.mdi.addSubWindow(page)
-        subwindow.setWindowTitle("ZMIANA PLIKU | Wprowadź informacje")
-        subwindow.show()
-        self.mdi.tileSubWindows()
-
-    def add_window_sampa(self):
-        page = SampaWindow()
-        subwindow = self.mdi.addSubWindow(page)
-        subwindow.setWindowTitle("SAMPA | Wprowadź informacje")
-        subwindow.show()
-        self.mdi.tileSubWindows()
-
-    def add_window_desha(self):
-        page = DeshaWindow()
-        subwindow = self.mdi.addSubWindow(page)
-        subwindow.setWindowTitle("DESHA | Wprowadź informacje")
-        subwindow.show()
-        self.mdi.tileSubWindows()
-
-    def add_window_settings(self):
-        page = SettingsWindow()
-        subwindow = self.mdi.addSubWindow(page)
-        subwindow.setWindowTitle("USTAWIENIA | Zmień domyślne wartości")
+        subwindow.setWindowTitle(msg)
         subwindow.show()
         self.mdi.tileSubWindows()
 
