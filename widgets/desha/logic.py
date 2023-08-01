@@ -23,7 +23,6 @@ def desha(desha_file, db_file):
     db_Taric = list(db["TARIC"])
 
     # iterate through every row and change values
-    # TODO: change column names
     for index in frame.index:
         kodTowaru = frame.loc[index, "Kod towaru"]
         if kodTowaru in db_Symbol:

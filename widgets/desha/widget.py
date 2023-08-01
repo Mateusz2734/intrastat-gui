@@ -20,7 +20,7 @@ class DeshaWindow(BaseWidget):
             self.db_file = self.settings["db"]
         except Exception:
             self.db_file = None
-        self.sampa_file = None
+        self.desha_file = None
         self.user = os.getlogin()
 
         # load UI file
@@ -43,7 +43,7 @@ class DeshaWindow(BaseWidget):
         self.btn_ok.clicked.connect(self.ok_handler)
 
     def populate_labels(self):
-        self.label_choose_file.setText(self.sampa_file)
+        self.label_choose_file.setText(self.desha_file)
         self.label_choose_db.setText(self.db_file)
 
     def choose_db_handler(self):
@@ -66,12 +66,12 @@ class DeshaWindow(BaseWidget):
         )
         if fpath[0] != "":
             self.label_choose_file.setText(fpath[0])
-            self.sampa_file = fpath[0]
+            self.desha_file = fpath[0]
 
     def runDeshaWorker(self):
         self.thread = QThread()
 
-        self.worker = DeshaWorker(self.sampa_file, self.db_file)
+        self.worker = DeshaWorker(self.desha_file, self.db_file)
 
         self.worker.moveToThread(self.thread)
 
@@ -99,7 +99,7 @@ class DeshaWindow(BaseWidget):
         self.thread.start()
 
     def ok_handler(self):
-        if (self.db_file and self.sampa_file) is not None:
+        if (self.db_file and self.desha_file) is not None:
             self.runDeshaWorker()
         else:
             self.show_warning("Proszę uzupełnić wszystkie dane!")
