@@ -2,7 +2,7 @@ import logging as log
 from os.path import exists as file_exists
 import yaml
 
-SETTINGS_FILE = "C:/Skrypty/Pomocnik/settings.yaml"
+from config.paths import PATHS
 
 DEFAULT_DATA = {
     "invoice": {"db": None},
@@ -12,9 +12,9 @@ DEFAULT_DATA = {
 }
 
 def create_settings():
-    if not file_exists(SETTINGS_FILE):
+    if not file_exists(PATHS.SETTINGS):
         try:
-            with open(SETTINGS_FILE, "w") as file:
+            with open(PATHS.SETTINGS, "w") as file:
                 file.write(yaml.safe_dump(DEFAULT_DATA))
         except Exception as e:
             log.error(f"{__name__} :: {str(e)}")
@@ -22,7 +22,7 @@ def create_settings():
 
 def read_settings():
     try:
-        with open(SETTINGS_FILE, "r") as file:
+        with open(PATHS.SETTINGS, "r") as file:
             yaml_settings = yaml.safe_load(file)
         return yaml_settings
     except Exception as e:

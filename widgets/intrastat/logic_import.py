@@ -4,13 +4,11 @@ import xml.etree.ElementTree as Et
 
 import pandas as pd
 
+from config.paths import PATHS
 from widgets.intrastat import logic_export
 
 
 def importf(intrastat_dir, db1_file, db2_file):
-    # get current user
-    user = os.getlogin()
-
     # cd into folder with xml files
     os.chdir(intrastat_dir)
 
@@ -82,9 +80,9 @@ def importf(intrastat_dir, db1_file, db2_file):
         "int64")
 
     # save files
-    dataframe_intrastat.to_excel(f"C:/Skrypty/Pomocnik/temp.xlsx", index=False)
-    dataframe_info.to_excel(f"C:/Users/{user}/Desktop/info.xlsx", index=False)
+    dataframe_intrastat.to_excel(PATHS.TEMP, index=False)
+    dataframe_info.to_excel(f"{PATHS.DESKTOP}/info.xlsx", index=False)
 
-    logic_export.exportf(f"C:/Skrypty/Pomocnik/temp.xlsx", db1_file, db2_file)
+    logic_export.exportf(PATHS.TEMP, db1_file, db2_file)
 
-    os.remove(f"C:/Skrypty/Pomocnik/temp.xlsx")
+    os.remove(PATHS.TEMP)

@@ -2,11 +2,10 @@ from os import getlogin
 
 import pandas as pd
 
+from config.paths import PATHS
+
 
 def exportf(intrastat_file, db1_file, db2_file):
-    # get current user
-    user = getlogin()
-
     # make dataframe from .xlsx file
     frame = pd.read_excel(intrastat_file)
 
@@ -23,19 +22,19 @@ def exportf(intrastat_file, db1_file, db2_file):
 
     # iterate through every row and change values
     for index in frame.index:
-        kod = frame.loc[index, 'KodTowarowy']
+        kod = frame.loc[index, "KodTowarowy"]
         try:
             kodTowarowy = int(str(kod)[:8:])
         except ValueError:
             kodTowarowy = 0
         if kodTowarowy in db_KodTowarowy:
             i = db_KodTowarowy.index(kodTowarowy)
-            frame.loc[index, 'KodTowarowy'] = db_KodTowarowy[i]
-            frame.loc[index, 'OpisTowaru'] = db_OpisTowaru[i]
+            frame.loc[index, "KodTowarowy"] = db_KodTowarowy[i]
+            frame.loc[index, "OpisTowaru"] = db_OpisTowaru[i]
         if kod in db2_StaryKodTowarowy:
             i = db2_StaryKodTowarowy.index(kod)
-            frame.loc[index, 'KodTowarowy'] = db2_NowyKodTowarowy[i]
-            frame.loc[index, 'OpisTowaru'] = db2_NowyOpisTowaru[i]
+            frame.loc[index, "KodTowarowy"] = db2_NowyKodTowarowy[i]
+            frame.loc[index, "OpisTowaru"] = db2_NowyOpisTowaru[i]
 
     # save dataframe as .xlsx file
-    frame.to_excel(f"C:/Users/{user}/Desktop/gotowe.xlsx", index=False)
+    frame.to_excel(f"{PATHS.DESKTOP}/gotowe.xlsx", index=False)

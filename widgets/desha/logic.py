@@ -2,13 +2,12 @@ import os
 
 import pandas as pd
 
+from config.paths import PATHS
+
 
 def desha(desha_file, db_file):
     # get name of the file
     name = os.path.basename(desha_file).split(".")[0]
-
-    # get current user
-    user = os.getlogin()
 
     # make dataframe from .xlsx file and set default value on column 4
     frame = pd.read_excel(desha_file)
@@ -33,4 +32,4 @@ def desha(desha_file, db_file):
             frame.loc[index, "Kod dodatkowy"] = db_Taric[i]
 
     # save dataframe as .xlsx file
-    frame.to_excel(f"C:/Users/{user}/Desktop/{name}-gotowy.xlsx", index=False)
+    frame.to_excel(f"{PATHS.DESKTOP}/{name}-gotowy.xlsx", index=False)
