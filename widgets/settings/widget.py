@@ -1,4 +1,5 @@
 import json
+import yaml
 import os
 import os.path as p
 
@@ -8,9 +9,9 @@ from PyQt5 import uic
 from widgets.BaseWidget import BaseWidget
 
 
-def is_json(candidate):
+def is_yaml(candidate):
     try:
-        json.loads(candidate)
+        yaml.safe_load(candidate)
     except ValueError:
         return False
     return True
@@ -23,7 +24,7 @@ class SettingsWindow(BaseWidget):
     def __init__(self):
         super().__init__()
         self.user = os.getlogin()
-        self.path = "C:/Skrypty/Pomocnik/settings.json"
+        self.path = "C:/Skrypty/Pomocnik/settings.yaml"
 
         # load UI file
         uic.loadUi(p.join(basedir, p.normpath("./style/settings.ui")), self)
@@ -40,18 +41,17 @@ class SettingsWindow(BaseWidget):
     def load_data(self):
         try:
             with open(self.path, "r") as file:
-                data = json.load(file)
-                self.editor.setPlainText(json.dumps(
-                    data, indent=4, sort_keys=True))
+                data = yaml.safe_load(file)
+                self.editor.setPlainText(yaml.safe_dump(data))
         except Exception:
             self.show_error("Nie udało się otworzyć pliku.")
 
     def save_data(self):
         data = self.editor.toPlainText()
-        if is_json(data):
-            json_data = json.dumps(json.loads(data), indent=4, sort_keys=True)
+        if is_yaml(data):
+            yaml_data = json.dumps(yaml.safe_load(data))
             with open(self.path, "w") as file:
-                file.write(json_data)
+                file.write(yaml_data)
                 self.show_message("Pomyślnie zapisano ustawienia.")
         else:
-            self.show_warning("Nieprawidłowa postać pliku .json")
+            self.show_warning("Nieprawidłowa postać pliku .yaml")
