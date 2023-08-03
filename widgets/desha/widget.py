@@ -5,6 +5,8 @@ from PyQt5.QtWidgets import QLabel, QPushButton, QFileDialog
 from PyQt5.QtCore import QThread
 from PyQt5 import uic
 
+from config.paths import PATHS
+from config.messages import MSG
 from widgets.desha.worker import DeshaWorker
 from widgets.settings.logic import read_settings
 from widgets.BaseWidget import BaseWidget
@@ -24,7 +26,7 @@ class DeshaWindow(BaseWidget):
         self.user = os.getlogin()
 
         # load UI file
-        uic.loadUi(p.join(basedir, p.normpath("./style/desha.ui")), self)
+        uic.loadUi(p.join(basedir, p.normpath(PATHS.STYLE.DESHA)), self)
 
         # define buttons
         self.btn_choose_db = self.findChild(QPushButton, "choose_db_btn")
@@ -50,8 +52,8 @@ class DeshaWindow(BaseWidget):
         fpath = QFileDialog.getOpenFileName(
             self,
             "Wybierz bazę danych",
-            f"C:/Users/{self.user}/Desktop",
-            "Pliki Excel (*.xlsx)",
+            PATHS.DESKTOP,
+            MSG.FILES.EXCEL,
         )
         if fpath[0] != "":
             self.label_choose_db.setText(fpath[0])
@@ -61,8 +63,8 @@ class DeshaWindow(BaseWidget):
         fpath = QFileDialog.getOpenFileName(
             self,
             "Wybierz plik faktury",
-            f"C:/Users/{self.user}/Desktop",
-            "Pliki Excel (*.xlsx)",
+            PATHS.DESKTOP,
+            MSG.FILES.EXCEL,
         )
         if fpath[0] != "":
             self.label_choose_file.setText(fpath[0])
@@ -81,7 +83,7 @@ class DeshaWindow(BaseWidget):
         # In case of error
         self.worker.error.connect(self.hide_loader)
         self.worker.error.connect(
-            lambda: self.show_error("Wystąpił błąd w trakcie przetwarzania pliku")
+            lambda: self.show_error(MSG.ERRORS.CANT_PROCESS)
         )
         self.worker.error.connect(self.thread.quit)
         self.worker.error.connect(self.worker.deleteLater)
@@ -89,7 +91,7 @@ class DeshaWindow(BaseWidget):
         # If everything works fine
         self.worker.finished.connect(self.hide_loader)
         self.worker.finished.connect(
-            lambda: self.show_message("Plik przetworzony pomyślnie.")
+            lambda: self.show_message(MSG.SUCCESS.FILE_PROCESSED)
         )
         self.worker.finished.connect(self.thread.quit)
         self.worker.finished.connect(self.worker.deleteLater)
@@ -102,4 +104,4 @@ class DeshaWindow(BaseWidget):
         if (self.db_file and self.desha_file) is not None:
             self.runDeshaWorker()
         else:
-            self.show_warning("Proszę uzupełnić wszystkie dane!")
+            self.show_warning(MSG.WARNINGS.MISSING_DATA)

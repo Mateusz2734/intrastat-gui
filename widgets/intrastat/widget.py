@@ -5,6 +5,8 @@ from PyQt5.QtWidgets import QComboBox, QLabel, QPushButton, QFileDialog
 from PyQt5.QtCore import QThread
 from PyQt5 import uic
 
+from config.paths import PATHS
+from config.messages import MSG
 from widgets.intrastat.worker_export import ExportWorker
 from widgets.intrastat.worker_import import ImportWorker
 from widgets.settings.logic import read_settings
@@ -13,6 +15,9 @@ from widgets.BaseWidget import BaseWidget
 basedir = p.dirname(p.dirname(p.dirname(__file__)))
 
 
+class TYPES:
+    EXPORT = "Wywozowy"
+    IMPORT = "Przywozowy"
 
 class IntrastatWindow(BaseWidget):
 
@@ -30,7 +35,7 @@ class IntrastatWindow(BaseWidget):
         self.intrastat_file = None
 
         # load UI file
-        uic.loadUi(p.join(basedir, p.normpath("./style/intrastat.ui")), self)
+        uic.loadUi(p.join(basedir, p.normpath(PATHS.STYLE.INTRASTAT)), self)
 
         # define buttons
         self.btn_choose_db = self.findChild(QPushButton, "choose_db_btn")
@@ -80,28 +85,28 @@ class IntrastatWindow(BaseWidget):
 
     def choose_db_handler(self):
         fpath = QFileDialog.getOpenFileName(
-            self, "Wybierz bazę danych", f"C:/Users/{self.user}/Desktop", "Skoroszyt programu Excel  (*.xlsx)")
+            self, "Wybierz bazę danych", PATHS.DESKTOP, MSG.FILES.EXCEL)
         if fpath[0] != "":
             self.label_choose_db.setText(fpath[0])
             self.db_file = fpath[0]
 
     def choose_db2_handler(self):
         fpath = QFileDialog.getOpenFileName(
-            self, "Wybierz bazę kodów", f"C:/Users/{self.user}/Desktop", "Skoroszyt programu Excel  (*.xlsx)")
+            self, "Wybierz bazę kodów", PATHS.DESKTOP, MSG.FILES.EXCEL)
         if fpath[0] != "":
             self.label_choose_db2.setText(fpath[0])
             self.db2_file = fpath[0]
 
     def choose_file_handler(self):
-        if self.type == "Wywozowy":
+        if self.type == TYPES.EXPORT:
             fpath = QFileDialog.getOpenFileName(
-                self, "Wybierz plik Intrastatu", f"C:/Users/{self.user}/Desktop", "Skoroszyt programu Excel  (*.xlsx)")
+                self, "Wybierz plik Intrastatu", PATHS.DESKTOP, MSG.FILES.EXCEL)
             if fpath[0] != "":
                 self.label_choose_file.setText(fpath[0])
                 self.intrastat_file = fpath[0]
-        elif self.type == "Przywozowy":
+        elif self.type == TYPES.IMPORT:
             fpath = QFileDialog.getExistingDirectory(
-                self, "Wybierz folder z plikami .xml Intrastatu", f"C:/Users/{self.user}/Desktop")
+                self, "Wybierz folder z plikami .xml Intrastatu", PATHS.DESKTOP)
             if fpath != "":
                 self.label_choose_file.setText(fpath)
                 self.intrastat_file = fpath
@@ -120,14 +125,14 @@ class IntrastatWindow(BaseWidget):
         # In case of error
         self.worker.error.connect(self.hide_loader)
         self.worker.error.connect(
-            lambda: self.show_error("Wystąpił błąd w trakcie przetwarzania pliku"))
+            lambda: self.show_error(MSG.ERRORS.CANT_PROCESS))
         self.worker.error.connect(self.thread.quit)
         self.worker.error.connect(self.worker.deleteLater)
 
         # If everything works fine
         self.worker.finished.connect(self.hide_loader)
         self.worker.finished.connect(
-            lambda: self.show_message("Plik przetworzony pomyślnie."))
+            lambda: self.show_message(MSG.SUCCESS.FILE_PROCESSED))
         self.worker.finished.connect(self.thread.quit)
         self.worker.finished.connect(self.worker.deleteLater)
 
@@ -149,14 +154,14 @@ class IntrastatWindow(BaseWidget):
         # In case of error
         self.worker.error.connect(self.hide_loader)
         self.worker.error.connect(
-            lambda: self.show_error("Wystąpił błąd w trakcie przetwarzania pliku"))
+            lambda: self.show_error(MSG.ERRORS.CANT_PROCESS))
         self.worker.error.connect(self.thread.quit)
         self.worker.error.connect(self.worker.deleteLater)
 
         # If everything works fine
         self.worker.finished.connect(self.hide_loader)
         self.worker.finished.connect(
-            lambda: self.show_message("Plik przetworzony pomyślnie."))
+            lambda: self.show_message(MSG.SUCCESS.FILE_PROCESSED))
         self.worker.finished.connect(self.thread.quit)
         self.worker.finished.connect(self.worker.deleteLater)
 
@@ -166,9 +171,9 @@ class IntrastatWindow(BaseWidget):
 
     def ok_handler(self):
         if self.choose_type.currentText() != "Wybierz rodzaj Intrastatu" and (self.db_file and self.db2_file and self.intrastat_file) is not None:
-            if self.type == "Wywozowy":
+            if self.type == TYPES.EXPORT:
                 self.runExportWorker()
-            elif self.type == "Przywozowy":
+            elif self.type == TYPES.IMPORT:
                 self.runImportWorker()
         else:
-            self.show_warning("Proszę uzupełnić wszystkie dane!")
+            self.show_warning(MSG.WARNINGS.MISSING_DATA)

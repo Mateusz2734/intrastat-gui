@@ -9,6 +9,8 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QMdiArea, QPushButton
 from PyQt5 import uic
 from PyQt5 import QtGui
 
+from config.messages import MSG
+from config.paths import PATHS
 from widgets.settings.logic import create_settings
 from widgets.intrastat.widget import IntrastatWindow
 from widgets.invoice.widget import InvoiceWindow
@@ -21,26 +23,17 @@ from widgets.BaseWidget import BaseWidget
 # import pyi_splash # type: ignore
 
 basedir = os.path.dirname(__file__)
-logging.config.fileConfig(os.path.join(basedir, "./log/logging.conf"))
+logging.config.fileConfig(os.path.join(basedir, PATHS.LOGGING))
 log = logging.getLogger(__name__)
-
-
-class MESSAGES:
-    INTRASTAT = "INTRASTAT | Wprowadź informacje"
-    INVOICE = "FAKTURA | Wprowadź informacje"
-    CONVERT = "ZMIANA PLIKU | Wprowadź informacje"
-    SAMPA = "SAMPA | Wprowadź informacje"
-    DESHA = "DESHA | Wprowadź informacje"
-    SETTINGS = "USTAWIENIA | Zmień domyślne wartości"
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
-        self.setWindowIcon(QtGui.QIcon(os.path.join(basedir, "./imgs/helper.png")))
+        self.setWindowIcon(QtGui.QIcon(os.path.join(basedir, PATHS.ICON)))
 
         # load UI file
-        uic.loadUi(os.path.join(basedir, "./style/main.ui"), self)
+        uic.loadUi(os.path.join(basedir, PATHS.STYLE.MAIN), self)
 
         # define widgets and buttons
         self.mdi = self.findChild(QMdiArea, "mdiArea")
@@ -53,22 +46,22 @@ class MainWindow(QMainWindow):
 
         # button click handlers
         self.intrastat_btn.clicked.connect(
-            lambda: self.add_window(IntrastatWindow, MESSAGES.INTRASTAT)
+            lambda: self.add_window(IntrastatWindow, MSG.TITLES.INTRASTAT)
         )
         self.invoice_btn.clicked.connect(
-            lambda: self.add_window(InvoiceWindow, MESSAGES.INVOICE)
+            lambda: self.add_window(InvoiceWindow, MSG.TITLES.INVOICE)
         )
         self.convert_btn.clicked.connect(
-            lambda: self.add_window(ConvertWindow, MESSAGES.CONVERT)
+            lambda: self.add_window(ConvertWindow, MSG.TITLES.CONVERT)
         )
         self.sampa_btn.clicked.connect(
-            lambda: self.add_window(SampaWindow, MESSAGES.SAMPA)
+            lambda: self.add_window(SampaWindow, MSG.TITLES.SAMPA)
         )
         self.desha_btn.clicked.connect(
-            lambda: self.add_window(DeshaWindow, MESSAGES.DESHA)
+            lambda: self.add_window(DeshaWindow, MSG.TITLES.DESHA)
         )
         self.settings_btn.clicked.connect(
-            lambda: self.add_window(SettingsWindow, MESSAGES.SETTINGS)
+            lambda: self.add_window(SettingsWindow, MSG.TITLES.SETTINGS)
         )
 
         # create settings file
@@ -89,7 +82,7 @@ class MainWindow(QMainWindow):
 
 
 app = QApplication(sys.argv)
-File = open(os.path.join(basedir, "style/style.qss"), "r")
+File = open(os.path.join(basedir, PATHS.STYLE.STYLESHEET), "r")
 
 with File:
     qss = File.read()

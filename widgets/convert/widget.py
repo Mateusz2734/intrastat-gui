@@ -5,6 +5,8 @@ from PyQt5.QtWidgets import QLabel, QPushButton, QFileDialog
 from PyQt5.QtCore import QThread
 from PyQt5 import uic
 
+from config.paths import PATHS
+from config.messages import MSG
 from widgets.convert.worker import ConvertWorker
 from widgets.BaseWidget import BaseWidget
 
@@ -18,7 +20,7 @@ class ConvertWindow(BaseWidget):
         self.user = os.getlogin()
 
         # load UI file
-        uic.loadUi(p.join(basedir, p.normpath("./style/convert.ui")), self)
+        uic.loadUi(p.join(basedir, p.normpath(PATHS.STYLE.CONVERT)), self)
 
         # define buttons
         self.btn_choose_file = self.findChild(QPushButton, "choose_file_btn")
@@ -38,7 +40,7 @@ class ConvertWindow(BaseWidget):
 
     def choose_file_handler(self):
         fpath = QFileDialog.getOpenFileName(
-            self, "Wybierz plik, którego rodzaj chcesz zmienić", f"C:/Users/{self.user}/Desktop", "Pliki XLS (*.xls)")
+            self, "Wybierz plik, którego rodzaj chcesz zmienić", PATHS.DESKTOP, MSG.FILES.XLS)
         if fpath[0] != "":
             self.label_choose_file.setText(fpath[0])
             self.xls_file = fpath[0]
@@ -56,14 +58,14 @@ class ConvertWindow(BaseWidget):
         # In case of error
         self.worker.error.connect(self.hide_loader)
         self.worker.error.connect(
-            lambda: self.show_error("Wystąpił błąd w trakcie przetwarzania pliku"))
+            lambda: self.show_error(MSG.ERRORS.CANT_PROCESS))
         self.worker.error.connect(self.thread.quit)
         self.worker.error.connect(self.worker.deleteLater)
 
         # If everything works fine
         self.worker.finished.connect(self.hide_loader)
         self.worker.finished.connect(
-            lambda: self.show_message("Plik przetworzony pomyślnie."))
+            lambda: self.show_message(MSG.SUCCESS.FILE_PROCESSED))
         self.worker.finished.connect(self.thread.quit)
         self.worker.finished.connect(self.worker.deleteLater)
 
@@ -75,4 +77,4 @@ class ConvertWindow(BaseWidget):
         if self.xls_file is not None:
             self.runConvertWorker()
         else:
-            self.show_warning("Proszę uzupełnić wszystkie dane!")
+            self.show_warning(MSG.WARNINGS.MISSING_DATA)

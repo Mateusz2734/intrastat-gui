@@ -6,6 +6,8 @@ import os.path as p
 from PyQt5.QtWidgets import QPushButton, QPlainTextEdit
 from PyQt5 import uic
 
+from config.paths import PATHS
+from config.messages import MSG
 from widgets.BaseWidget import BaseWidget
 
 
@@ -24,10 +26,10 @@ class SettingsWindow(BaseWidget):
     def __init__(self):
         super().__init__()
         self.user = os.getlogin()
-        self.path = "C:/Skrypty/Pomocnik/settings.yaml"
+        self.path = PATHS.SETTINGS
 
         # load UI file
-        uic.loadUi(p.join(basedir, p.normpath("./style/settings.ui")), self)
+        uic.loadUi(p.join(basedir, p.normpath(PATHS.STYLE.SETTINGS)), self)
 
         # define widgets
         self.btn_ok = self.findChild(QPushButton, "btn_ok")
@@ -44,7 +46,7 @@ class SettingsWindow(BaseWidget):
                 data = yaml.safe_load(file)
                 self.editor.setPlainText(yaml.safe_dump(data))
         except Exception:
-            self.show_error("Nie udało się otworzyć pliku.")
+            self.show_error(MSG.ERRORS.CANT_OPEN)
 
     def save_data(self):
         data = self.editor.toPlainText()
@@ -52,6 +54,6 @@ class SettingsWindow(BaseWidget):
             yaml_data = json.dumps(yaml.safe_load(data))
             with open(self.path, "w") as file:
                 file.write(yaml_data)
-                self.show_message("Pomyślnie zapisano ustawienia.")
+                self.show_message(MSG.SUCCESS.SETTINGS_SAVED)
         else:
-            self.show_warning("Nieprawidłowa postać pliku .yaml")
+            self.show_warning(MSG.ERRORS.INVALID_YAML)
