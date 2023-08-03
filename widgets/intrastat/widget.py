@@ -19,12 +19,13 @@ class TYPES:
     EXPORT = "Wywozowy"
     IMPORT = "Przywozowy"
 
+
 class IntrastatWindow(BaseWidget):
 
     def __init__(self):
         super().__init__()
-        self.user = os.getlogin()
         self.type = None
+
         try:
             self.settings = read_settings()["intrastat"]
             self.db_file = self.settings["db1"]
@@ -32,6 +33,7 @@ class IntrastatWindow(BaseWidget):
         except Exception:
             self.db_file = None
             self.db2_file = None
+
         self.intrastat_file = None
 
         # load UI file

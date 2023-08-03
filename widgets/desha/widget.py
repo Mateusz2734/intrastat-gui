@@ -23,7 +23,6 @@ class DeshaWindow(BaseWidget):
         except Exception:
             self.db_file = None
         self.desha_file = None
-        self.user = os.getlogin()
 
         # load UI file
         uic.loadUi(p.join(basedir, p.normpath(PATHS.STYLE.DESHA)), self)
@@ -82,9 +81,7 @@ class DeshaWindow(BaseWidget):
 
         # In case of error
         self.worker.error.connect(self.hide_loader)
-        self.worker.error.connect(
-            lambda: self.show_error(MSG.ERRORS.CANT_PROCESS)
-        )
+        self.worker.error.connect(lambda: self.show_error(MSG.ERRORS.CANT_PROCESS))
         self.worker.error.connect(self.thread.quit)
         self.worker.error.connect(self.worker.deleteLater)
 

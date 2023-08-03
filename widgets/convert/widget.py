@@ -17,7 +17,6 @@ class ConvertWindow(BaseWidget):
     def __init__(self):
         super().__init__()
         self.xls_file = None
-        self.user = os.getlogin()
 
         # load UI file
         uic.loadUi(p.join(basedir, p.normpath(PATHS.STYLE.CONVERT)), self)

@@ -23,7 +23,6 @@ class SampaWindow(BaseWidget):
         except Exception:
             self.db_file= None
         self.sampa_file = None
-        self.user = os.getlogin()
 
         # load UI file
         uic.loadUi(p.join(basedir, p.normpath(PATHS.STYLE.SAMPA)), self)

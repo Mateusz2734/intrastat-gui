@@ -23,7 +23,6 @@ class InvoiceWindow(BaseWidget):
         except Exception:
             self.db_file = None
         self.invoice_file = None
-        self.user = os.getlogin()
 
         # load UI file
         uic.loadUi(p.join(basedir, p.normpath(PATHS.STYLE.INVOICE)), self)
