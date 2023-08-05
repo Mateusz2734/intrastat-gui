@@ -7,9 +7,10 @@ from PyQt5 import uic
 
 from config.paths import PATHS
 from config.messages import MSG
-from widgets.invoice.worker import InvoiceWorker
 from widgets.settings.logic import read_settings
 from widgets.BaseWidget import BaseWidget
+from widgets.worker import Worker
+from widgets.invoice.logic import invoice
 
 basedir = p.dirname(p.dirname(p.dirname(__file__)))
 
@@ -64,7 +65,7 @@ class InvoiceWindow(BaseWidget):
     def runInvoiceWorker(self):
         self.thread = QThread()
 
-        self.worker = InvoiceWorker(self.invoice_file, self.db_file)
+        self.worker = Worker(invoice, self.invoice_file, self.db_file)
 
         self.worker.moveToThread(self.thread)
 

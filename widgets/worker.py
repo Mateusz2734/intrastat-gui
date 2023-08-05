@@ -2,15 +2,12 @@ import logging as log
 
 from PyQt5.QtCore import QObject, pyqtSignal
 
-from widgets.intrastat.logic_import import importf
 
-
-class ImportWorker(QObject):
-    def __init__(self, intrastat_file, db_file, db2_file):
+class Worker(QObject):
+    def __init__(self, logic, *args):
         super().__init__()
-        self.intrastat_file = intrastat_file
-        self.db_file = db_file
-        self.db2_file = db2_file
+        self.logic = logic
+        self.args = args
 
     finished = pyqtSignal()
     started = pyqtSignal()
@@ -19,7 +16,7 @@ class ImportWorker(QObject):
     def run(self):
         self.started.emit()
         try:
-            importf(self.intrastat_file, self.db_file, self.db2_file)
+            self.logic(self.args)
         except Exception as e:
             log.error(f"{__name__} :: {str(e)}")
             self.error.emit()

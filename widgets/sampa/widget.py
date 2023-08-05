@@ -7,9 +7,10 @@ from PyQt5 import uic
 
 from config.paths import PATHS
 from config.messages import MSG
-from widgets.sampa.worker import SampaWorker
 from widgets.settings.logic import read_settings
 from widgets.BaseWidget import BaseWidget
+from widgets.worker import Worker
+from widgets.sampa.logic import sampa
 
 basedir = p.dirname(p.dirname(p.dirname(__file__)))
 
@@ -64,7 +65,7 @@ class SampaWindow(BaseWidget):
     def runInvoiceWorker(self):
         self.thread = QThread()
 
-        self.worker = SampaWorker(self.sampa_file, self.db_file)
+        self.worker = Worker(sampa, self.sampa_file, self.db_file)
 
         self.worker.moveToThread(self.thread)
 

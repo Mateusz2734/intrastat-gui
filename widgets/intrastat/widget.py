@@ -7,10 +7,11 @@ from PyQt5 import uic
 
 from config.paths import PATHS
 from config.messages import MSG
-from widgets.intrastat.worker_export import ExportWorker
-from widgets.intrastat.worker_import import ImportWorker
 from widgets.settings.logic import read_settings
 from widgets.BaseWidget import BaseWidget
+from widgets.worker import Worker
+from widgets.intrastat.logic_export import exportf
+from widgets.intrastat.logic_import import importf
 
 basedir = p.dirname(p.dirname(p.dirname(__file__)))
 
@@ -116,8 +117,7 @@ class IntrastatWindow(BaseWidget):
     def runExportWorker(self):
         self.thread = QThread()
 
-        self.worker = ExportWorker(
-            self.intrastat_file, self.db_file, self.db2_file)
+        self.worker = Worker(exportf, self.intrastat_file, self.db_file, self.db2_file)
 
         self.worker.moveToThread(self.thread)
 
@@ -145,8 +145,7 @@ class IntrastatWindow(BaseWidget):
     def runImportWorker(self):
         self.thread = QThread()
 
-        self.worker = ImportWorker(
-            self.intrastat_file, self.db_file, self.db2_file)
+        self.worker = Worker(importf, self.intrastat_file, self.db_file, self.db2_file)
 
         self.worker.moveToThread(self.thread)
 

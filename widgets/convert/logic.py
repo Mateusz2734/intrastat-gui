@@ -3,7 +3,9 @@ import os
 from pyexcel import save_book_as
 
 
-def convert(xls_file):
+def convert(args):
+    xls_file = args[0]
+
     filename = os.path.basename(xls_file).split(".")[0]
     dirname = os.path.dirname(xls_file)
     out = os.path.join(dirname, f"{filename}-zmieniony.xlsx")

@@ -5,7 +5,13 @@ import pandas as pd
 from config.paths import PATHS
 
 
-def desha(desha_file, db_file):
+def desha(args):
+    if len(args) != 2:
+        raise Exception("Wrong number of arguments")
+
+    desha_file = args[0]
+    db_file = args[1]
+
     # get name of the file
     name = os.path.basename(desha_file).split(".")[0]
 

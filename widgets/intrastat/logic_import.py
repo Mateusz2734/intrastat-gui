@@ -8,7 +8,14 @@ from config.paths import PATHS
 from widgets.intrastat import logic_export
 
 
-def importf(intrastat_dir, db1_file, db2_file):
+def importf(args):
+    if len(args) != 3:
+        raise Exception("Wrong number of arguments")
+
+    intrastat_dir = args[0]
+    db1_file = args[1]
+    db2_file = args[2]
+
     # cd into folder with xml files
     os.chdir(intrastat_dir)
 

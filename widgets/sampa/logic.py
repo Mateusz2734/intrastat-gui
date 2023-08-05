@@ -5,7 +5,13 @@ import pandas as pd
 from config.paths import PATHS
 
 
-def sampa(sampa_file, db_file):
+def sampa(args):
+    if len(args) != 2:
+        raise Exception("Wrong number of arguments")
+    
+    sampa_file = args[0]
+    db_file = args[1]
+
     # get name of the file
     name = os.path.basename(sampa_file).split(".")[0]
 

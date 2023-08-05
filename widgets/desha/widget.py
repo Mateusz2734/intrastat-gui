@@ -7,9 +7,10 @@ from PyQt5 import uic
 
 from config.paths import PATHS
 from config.messages import MSG
-from widgets.desha.worker import DeshaWorker
 from widgets.settings.logic import read_settings
 from widgets.BaseWidget import BaseWidget
+from widgets.worker import Worker
+from widgets.desha.logic import desha
 
 basedir = p.dirname(p.dirname(p.dirname(__file__)))
 
@@ -72,7 +73,7 @@ class DeshaWindow(BaseWidget):
     def runDeshaWorker(self):
         self.thread = QThread()
 
-        self.worker = DeshaWorker(self.desha_file, self.db_file)
+        self.worker = Worker(desha, self.desha_file, self.db_file)
 
         self.worker.moveToThread(self.thread)
 

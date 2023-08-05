@@ -1,6 +1,7 @@
 PyQt5==5.15.7
 pandas==1.4.3
 openpyxl==3.0.10
+pyyaml==6.0.1
 pyexcel==0.7.0
 chardet==5.1.0
 lml==0.1.0

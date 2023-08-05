@@ -7,8 +7,9 @@ from PyQt5 import uic
 
 from config.paths import PATHS
 from config.messages import MSG
-from widgets.convert.worker import ConvertWorker
 from widgets.BaseWidget import BaseWidget
+from widgets.worker import Worker
+from widgets.convert.logic import convert
 
 basedir = p.dirname(p.dirname(p.dirname(__file__)))
 
@@ -47,7 +48,7 @@ class ConvertWindow(BaseWidget):
     def runConvertWorker(self):
         self.thread = QThread()
 
-        self.worker = ConvertWorker(self.xls_file)
+        self.worker = Worker(convert, self.xls_file)
 
         self.worker.moveToThread(self.thread)
 

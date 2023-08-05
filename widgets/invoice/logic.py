@@ -5,7 +5,13 @@ import pandas as pd
 from config.paths import PATHS
 
 
-def invoice(invoice_file, db_file):
+def invoice(args):
+    if len(args) != 2:
+        raise Exception("Wrong number of arguments")
+
+    invoice_file = args[0]
+    db_file = args[1]
+
     name = os.path.basename(invoice_file).split(".")[0]
 
     # open database and define constants

@@ -5,7 +5,14 @@ import pandas as pd
 from config.paths import PATHS
 
 
-def exportf(intrastat_file, db1_file, db2_file):
+def exportf(args):
+    if len(args) != 3:
+        raise Exception("Wrong number of arguments")
+
+    intrastat_file = args[0]
+    db1_file = args[1]
+    db2_file = args[2]
+
     # make dataframe from .xlsx file
     frame = pd.read_excel(intrastat_file)
 
