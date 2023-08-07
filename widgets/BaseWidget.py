@@ -1,9 +1,11 @@
 import os
 
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QThread
 
 from widgets.loader import Loader
+from widgets.worker import Worker
+from config.messages import MSG
 
 basedir = os.path.dirname(os.path.dirname(__file__))
 
@@ -46,6 +48,34 @@ class BaseWidget(QMainWindow):
         err.setIcon(QMessageBox.Critical)
         err.setWindowFlag(Qt.FramelessWindowHint)
         err.exec()
+
+    def run_worker(self, logic, args, err_msg=None, succ_msg=None):
+        self.thread = QThread()
+
+        self.worker = Worker(logic, args)
+
+        self.worker.moveToThread(self.thread)
+
+        self.thread.started.connect(self.worker.run)
+        self.worker.started.connect(self.show_loader)
+
+        # In case of error
+        self.worker.error.connect(self.hide_loader)
+        self.worker.error.connect(
+            lambda: self.show_error(err_msg if err_msg is not None else MSG.ERRORS.CANT_PROCESS))
+        self.worker.error.connect(self.thread.quit)
+        self.worker.error.connect(self.worker.deleteLater)
+
+        # If everything works fine
+        self.worker.finished.connect(self.hide_loader)
+        self.worker.finished.connect(
+            lambda: self.show_message(succ_msg if succ_msg is not None else MSG.SUCCESS.FILE_PROCESSED))
+        self.worker.finished.connect(self.thread.quit)
+        self.worker.finished.connect(self.worker.deleteLater)
+
+        self.thread.finished.connect(self.thread.deleteLater)
+
+        self.thread.start()
 
     def show_loader(self):
         self.loader.show()

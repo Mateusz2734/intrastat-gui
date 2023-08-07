@@ -1,15 +1,12 @@
-import os
 import os.path as p
 
 from PyQt5.QtWidgets import QComboBox, QLabel, QPushButton, QFileDialog
-from PyQt5.QtCore import QThread
 from PyQt5 import uic
 
 from config.paths import PATHS
 from config.messages import MSG
 from widgets.settings.logic import read_settings
 from widgets.BaseWidget import BaseWidget
-from widgets.worker import Worker
 from widgets.intrastat.logic_export import exportf
 from widgets.intrastat.logic_import import importf
 
@@ -114,67 +111,13 @@ class IntrastatWindow(BaseWidget):
                 self.label_choose_file.setText(fpath)
                 self.intrastat_file = fpath
 
-    def runExportWorker(self):
-        self.thread = QThread()
-
-        self.worker = Worker(exportf, self.intrastat_file, self.db_file, self.db2_file)
-
-        self.worker.moveToThread(self.thread)
-
-        self.thread.started.connect(self.worker.run)
-        self.worker.started.connect(self.show_loader)
-
-        # In case of error
-        self.worker.error.connect(self.hide_loader)
-        self.worker.error.connect(
-            lambda: self.show_error(MSG.ERRORS.CANT_PROCESS))
-        self.worker.error.connect(self.thread.quit)
-        self.worker.error.connect(self.worker.deleteLater)
-
-        # If everything works fine
-        self.worker.finished.connect(self.hide_loader)
-        self.worker.finished.connect(
-            lambda: self.show_message(MSG.SUCCESS.FILE_PROCESSED))
-        self.worker.finished.connect(self.thread.quit)
-        self.worker.finished.connect(self.worker.deleteLater)
-
-        self.thread.finished.connect(self.thread.deleteLater)
-
-        self.thread.start()
-
-    def runImportWorker(self):
-        self.thread = QThread()
-
-        self.worker = Worker(importf, self.intrastat_file, self.db_file, self.db2_file)
-
-        self.worker.moveToThread(self.thread)
-
-        self.thread.started.connect(self.worker.run)
-        self.worker.started.connect(self.show_loader)
-
-        # In case of error
-        self.worker.error.connect(self.hide_loader)
-        self.worker.error.connect(
-            lambda: self.show_error(MSG.ERRORS.CANT_PROCESS))
-        self.worker.error.connect(self.thread.quit)
-        self.worker.error.connect(self.worker.deleteLater)
-
-        # If everything works fine
-        self.worker.finished.connect(self.hide_loader)
-        self.worker.finished.connect(
-            lambda: self.show_message(MSG.SUCCESS.FILE_PROCESSED))
-        self.worker.finished.connect(self.thread.quit)
-        self.worker.finished.connect(self.worker.deleteLater)
-
-        self.thread.finished.connect(self.thread.deleteLater)
-
-        self.thread.start()
-
     def ok_handler(self):
         if self.choose_type.currentText() != "Wybierz rodzaj Intrastatu" and (self.db_file and self.db2_file and self.intrastat_file) is not None:
             if self.type == TYPES.EXPORT:
-                self.runExportWorker()
+                self.run_worker(exportf, self.intrastat_file,
+                                self.db_file, self.db2_file)
             elif self.type == TYPES.IMPORT:
-                self.runImportWorker()
+                self.run_worker(importf, self.intrastat_file,
+                                self.db_file, self.db2_file)
         else:
             self.show_warning(MSG.WARNINGS.MISSING_DATA)

@@ -1,6 +1,5 @@
 import json
 import yaml
-import os
 import os.path as p
 
 from PyQt5.QtWidgets import QPushButton, QPlainTextEdit
@@ -25,7 +24,6 @@ basedir = p.dirname(p.dirname(p.dirname(__file__)))
 class SettingsWindow(BaseWidget):
     def __init__(self):
         super().__init__()
-        self.user = os.getlogin()
         self.path = PATHS.SETTINGS
 
         # load UI file

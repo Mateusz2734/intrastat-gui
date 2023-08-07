@@ -1,15 +1,12 @@
-import os
 import os.path as p
 
 from PyQt5.QtWidgets import QLabel, QPushButton, QFileDialog
-from PyQt5.QtCore import QThread
 from PyQt5 import uic
 
 from config.paths import PATHS
 from config.messages import MSG
 from widgets.settings.logic import read_settings
 from widgets.BaseWidget import BaseWidget
-from widgets.worker import Worker
 from widgets.sampa.logic import sampa
 
 basedir = p.dirname(p.dirname(p.dirname(__file__)))
@@ -22,7 +19,7 @@ class SampaWindow(BaseWidget):
             self.settings = read_settings()["sampa"]
             self.db_file = self.settings["db"]
         except Exception:
-            self.db_file= None
+            self.db_file = None
         self.sampa_file = None
 
         # load UI file
@@ -62,36 +59,8 @@ class SampaWindow(BaseWidget):
             self.label_choose_file.setText(fpath[0])
             self.sampa_file = fpath[0]
 
-    def runInvoiceWorker(self):
-        self.thread = QThread()
-
-        self.worker = Worker(sampa, self.sampa_file, self.db_file)
-
-        self.worker.moveToThread(self.thread)
-
-        self.thread.started.connect(self.worker.run)
-        self.worker.started.connect(self.show_loader)
-
-        # In case of error
-        self.worker.error.connect(self.hide_loader)
-        self.worker.error.connect(
-            lambda: self.show_error(MSG.ERRORS.CANT_PROCESS))
-        self.worker.error.connect(self.thread.quit)
-        self.worker.error.connect(self.worker.deleteLater)
-
-        # If everything works fine
-        self.worker.finished.connect(self.hide_loader)
-        self.worker.finished.connect(
-            lambda: self.show_message(MSG.SUCCESS.FILE_PROCESSED))
-        self.worker.finished.connect(self.thread.quit)
-        self.worker.finished.connect(self.worker.deleteLater)
-
-        self.thread.finished.connect(self.thread.deleteLater)
-
-        self.thread.start()
-
     def ok_handler(self):
         if (self.db_file and self.sampa_file) is not None:
-            self.runInvoiceWorker()
+            self.run_worker(sampa, self.sampa_file, self.db_file)
         else:
             self.show_warning(MSG.WARNINGS.MISSING_DATA)
