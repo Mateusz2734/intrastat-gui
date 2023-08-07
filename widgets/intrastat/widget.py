@@ -10,8 +10,6 @@ from widgets.BaseWidget import BaseWidget
 from widgets.intrastat.logic_export import exportf
 from widgets.intrastat.logic_import import importf
 
-basedir = p.dirname(p.dirname(p.dirname(__file__)))
-
 
 class TYPES:
     EXPORT = "Wywozowy"
@@ -35,7 +33,7 @@ class IntrastatWindow(BaseWidget):
         self.intrastat_file = None
 
         # load UI file
-        uic.loadUi(p.join(basedir, p.normpath(PATHS.STYLE.INTRASTAT)), self)
+        uic.loadUi(p.join(PATHS.BASEDIR, p.normpath(PATHS.STYLE.INTRASTAT)), self)
 
         # define buttons
         self.btn_choose_db = self.findChild(QPushButton, "choose_db_btn")

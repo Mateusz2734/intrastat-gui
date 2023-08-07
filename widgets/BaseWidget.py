@@ -7,8 +7,6 @@ from widgets.loader import Loader
 from widgets.worker import Worker
 from config.messages import MSG
 
-basedir = os.path.dirname(os.path.dirname(__file__))
-
 
 class BaseWidget(QMainWindow):
     def __init__(self):

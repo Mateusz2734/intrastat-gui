@@ -8,8 +8,6 @@ from config.messages import MSG
 from widgets.BaseWidget import BaseWidget
 from widgets.convert.logic import convert
 
-basedir = p.dirname(p.dirname(p.dirname(__file__)))
-
 
 class ConvertWindow(BaseWidget):
     def __init__(self):
@@ -17,7 +15,7 @@ class ConvertWindow(BaseWidget):
         self.xls_file = None
 
         # load UI file
-        uic.loadUi(p.join(basedir, p.normpath(PATHS.STYLE.CONVERT)), self)
+        uic.loadUi(p.join(PATHS.BASEDIR, p.normpath(PATHS.STYLE.CONVERT)), self)
 
         # define buttons
         self.btn_choose_file = self.findChild(QPushButton, "choose_file_btn")

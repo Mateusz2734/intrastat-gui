@@ -18,16 +18,13 @@ def is_yaml(candidate):
     return True
 
 
-basedir = p.dirname(p.dirname(p.dirname(__file__)))
-
-
 class SettingsWindow(BaseWidget):
     def __init__(self):
         super().__init__()
         self.path = PATHS.SETTINGS
 
         # load UI file
-        uic.loadUi(p.join(basedir, p.normpath(PATHS.STYLE.SETTINGS)), self)
+        uic.loadUi(p.join(PATHS.BASEDIR, p.normpath(PATHS.STYLE.SETTINGS)), self)
 
         # define widgets
         self.btn_ok = self.findChild(QPushButton, "btn_ok")

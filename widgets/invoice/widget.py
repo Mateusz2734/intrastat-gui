@@ -9,8 +9,6 @@ from widgets.settings.logic import read_settings
 from widgets.BaseWidget import BaseWidget
 from widgets.invoice.logic import invoice
 
-basedir = p.dirname(p.dirname(p.dirname(__file__)))
-
 
 class InvoiceWindow(BaseWidget):
     def __init__(self):
@@ -23,7 +21,7 @@ class InvoiceWindow(BaseWidget):
         self.invoice_file = None
 
         # load UI file
-        uic.loadUi(p.join(basedir, p.normpath(PATHS.STYLE.INVOICE)), self)
+        uic.loadUi(p.join(PATHS.BASEDIR, p.normpath(PATHS.STYLE.INVOICE)), self)
 
         # define buttons
         self.btn_choose_db = self.findChild(QPushButton, "choose_db_btn")

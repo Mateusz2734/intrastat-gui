@@ -9,8 +9,6 @@ from widgets.settings.logic import read_settings
 from widgets.BaseWidget import BaseWidget
 from widgets.sampa.logic import sampa
 
-basedir = p.dirname(p.dirname(p.dirname(__file__)))
-
 
 class SampaWindow(BaseWidget):
     def __init__(self):
@@ -23,7 +21,7 @@ class SampaWindow(BaseWidget):
         self.sampa_file = None
 
         # load UI file
-        uic.loadUi(p.join(basedir, p.normpath(PATHS.STYLE.SAMPA)), self)
+        uic.loadUi(p.join(PATHS.BASEDIR, p.normpath(PATHS.STYLE.SAMPA)), self)
 
         # define buttons
         self.btn_choose_db = self.findChild(QPushButton, "choose_db_btn")

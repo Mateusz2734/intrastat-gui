@@ -7,8 +7,6 @@ from PyQt5.QtGui import QMovie
 
 from config.paths import PATHS
 
-basedir = os.path.dirname(os.path.dirname(__file__))
-
 
 class Loader(QWidget):
     def __init__(self):
@@ -21,7 +19,7 @@ class Loader(QWidget):
         self.setWindowFlag(Qt.WindowStaysOnTopHint)
         self.setStyleSheet("QLabel {background-color: #242424}")
 
-        self.movie = QMovie(p.join(basedir, p.normpath(PATHS.STYLE.LOADER)))
+        self.movie = QMovie(p.join(PATHS.BASEDIR, p.normpath(PATHS.STYLE.LOADER)))
         self.label.setMovie(self.movie)
 
         self.movie.start()

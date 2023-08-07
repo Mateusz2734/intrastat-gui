@@ -1,9 +1,11 @@
 import os
+import os.path as p
 
 
 class PATHS:
     SETTINGS = "C:/Skrypty/Pomocnik/settings.yaml"
     DESKTOP = f"C:/Users/{os.getlogin()}/Desktop"
+    BASEDIR = f"{p.dirname(p.dirname(__file__))}"
     TEMP = "C:/Skrypty/Pomocnik/temp.xlsx"
     LOGGING = "./log/logging.conf"
     ICON = "./imgs/helper.png"
