@@ -2,7 +2,7 @@ from typing import Type
 import sys
 import os
 import logging
-import logging.config
+import logging.config as cfg
 
 
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMdiArea, QPushButton
@@ -22,18 +22,19 @@ from widgets.BaseWidget import BaseWidget
 
 # import pyi_splash # type: ignore
 
-basedir = os.path.dirname(__file__)
-logging.config.fileConfig(os.path.join(basedir, PATHS.LOGGING))
+cfg.fileConfig(os.path.join(PATHS.BASEDIR, PATHS.LOGGING))
 log = logging.getLogger(__name__)
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
-        super(MainWindow, self).__init__()
-        self.setWindowIcon(QtGui.QIcon(os.path.join(basedir, PATHS.ICON)))
+        super().__init__()
+
+        self.setWindowIcon(QtGui.QIcon(
+            os.path.join(PATHS.BASEDIR, PATHS.ICON)))
 
         # load UI file
-        uic.loadUi(os.path.join(basedir, PATHS.STYLE.MAIN), self)
+        uic.loadUi(os.path.join(PATHS.BASEDIR, PATHS.STYLE.MAIN), self)
 
         # define widgets and buttons
         self.mdi = self.findChild(QMdiArea, "mdiArea")
@@ -81,13 +82,12 @@ class MainWindow(QMainWindow):
         self.mdi.tileSubWindows()
 
 
-app = QApplication(sys.argv)
-File = open(os.path.join(basedir, PATHS.STYLE.STYLESHEET), "r")
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
 
-with File:
-    qss = File.read()
-    app.setStyleSheet(qss)
+    with open(os.path.join(PATHS.BASEDIR, PATHS.STYLE.STYLESHEET), "r") as stylesheet:
+        qss = stylesheet.read()
+        app.setStyleSheet(qss)
 
-
-MainWindow = MainWindow()
-app.exec_()
+    MainWindow()
+    app.exec()
