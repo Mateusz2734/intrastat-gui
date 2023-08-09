@@ -18,6 +18,7 @@ class PATHS:
         DESHA = "./style/desha.ui"
         CONVERT = "./style/convert.ui"
         MAIN = "./style/main.ui"
+        DUPLICATES = "./style/duplicates.ui"
         LOADER = "./imgs/loader.gif"
         STYLESHEET = "style/style.qss"
 
