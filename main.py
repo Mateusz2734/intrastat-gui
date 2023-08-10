@@ -94,5 +94,5 @@ if __name__ == "__main__":
         qss = stylesheet.read()
         app.setStyleSheet(qss)
 
-    MainWindow()
+    main_window = MainWindow()
     app.exec()
