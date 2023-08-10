@@ -7,6 +7,7 @@ from widgets.loader import Loader
 from widgets.worker import Worker
 from config.messages import MSG
 
+STYLE = "QMessageBox {border: 2px solid #4891b4; border-radius:15px}"
 
 class BaseWidget(QMainWindow):
     def __init__(self):
@@ -17,8 +18,7 @@ class BaseWidget(QMainWindow):
     def show_message(self, message: str):
         msg = QMessageBox(self)
         msg.setWindowTitle("Gotowe!")
-        msg.setStyleSheet(
-            "QMessageBox {border: 2px solid #4891b4; border-radius:15px}")
+        msg.setStyleSheet(STYLE)
         msg.setText(message)
         msg.setStandardButtons(QMessageBox.Ok)
         msg.setIcon(QMessageBox.Information)
@@ -27,8 +27,7 @@ class BaseWidget(QMainWindow):
 
     def show_warning(self, warning: str):
         warn = QMessageBox(self)
-        warn.setStyleSheet(
-            "QMessageBox {border: 2px solid #4891b4; border-radius:15px}")
+        warn.setStyleSheet(STYLE)
         warn.setWindowTitle("Ups!")
         warn.setText(warning)
         warn.setStandardButtons(QMessageBox.Ok)
@@ -38,8 +37,7 @@ class BaseWidget(QMainWindow):
 
     def show_error(self, error: str):
         err = QMessageBox(self)
-        err.setStyleSheet(
-            "QMessageBox {border: 2px solid #4891b4; border-radius:15px}")
+        err.setStyleSheet(STYLE)
         err.setWindowTitle("Ups!")
         err.setText(error)
         err.setStandardButtons(QMessageBox.Ok)
