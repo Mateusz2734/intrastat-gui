@@ -6,7 +6,7 @@ from PyQt5 import uic
 from config.paths import PATHS
 from config.messages import MSG
 from widgets.BaseWidget import BaseWidget
-from widgets.duplicates.logic import duplicates
+from widgets.duplicates.logic import duplicates, get_columns
 
 
 class DuplicatesWindow(BaseWidget):
@@ -40,13 +40,21 @@ class DuplicatesWindow(BaseWidget):
 
         # other handlers
         self.choose_column.activated.connect(self.choose_column_handler)
+        self.sig_result.connect(self.add_columns)
 
     def populate_labels(self):
         self.label_choose_file.setText(self.file)
         self.label_choose_column.setText(self.column)
 
+    def add_columns(self, columns):
+        self.choose_column.addItems(columns)
+
     def choose_column_handler(self):
-        pass
+        if self.choose_column.currentText() != "Wybierz kolumnę":
+            self.label_choose_column.setText(self.choose_column.currentText())
+            self.column = self.choose_column.currentText()
+        else:
+            self.label_choose_column.setText("")
 
     def choose_file_handler(self):
         fpath = QFileDialog.getOpenFileName(
@@ -54,6 +62,9 @@ class DuplicatesWindow(BaseWidget):
         if fpath[0] != "":
             self.label_choose_file.setText(fpath[0])
             self.file = fpath[0]
+
+            self.run_worker(get_columns, self.file,
+                            result_type=list, no_msg=True)
 
     def ok_handler(self):
         if self.choose_column.currentText() != "Wybierz kolumnę" and (self.file and self.column) is not None:
