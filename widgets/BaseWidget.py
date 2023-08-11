@@ -1,7 +1,5 @@
-import os
-
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
-from PyQt5.QtCore import Qt, QThread
+from PyQt5.QtCore import Qt, QThread, pyqtSignal
 
 from widgets.loader import Loader
 from widgets.worker import Worker
@@ -9,7 +7,10 @@ from config.messages import MSG
 
 STYLE = "QMessageBox {border: 2px solid #4891b4; border-radius:15px}"
 
+
 class BaseWidget(QMainWindow):
+    sig_result = pyqtSignal(list)
+
     def __init__(self):
         super().__init__()
 
@@ -45,10 +46,10 @@ class BaseWidget(QMainWindow):
         err.setWindowFlag(Qt.FramelessWindowHint)
         err.exec()
 
-    def run_worker(self, logic, args, err_msg=None, succ_msg=None):
+    def run_worker(self, logic, *args, err_msg=None, succ_msg=None, result_type=None, no_msg=False):
         self.thread = QThread()
 
-        self.worker = Worker(logic, args)
+        self.worker = Worker(logic, args, type=result_type)
 
         self.worker.moveToThread(self.thread)
 
@@ -64,8 +65,11 @@ class BaseWidget(QMainWindow):
 
         # If everything works fine
         self.worker.finished.connect(self.hide_loader)
-        self.worker.finished.connect(
-            lambda: self.show_message(succ_msg if succ_msg is not None else MSG.SUCCESS.FILE_PROCESSED))
+        if result_type is not None:
+            self.worker.finished.connect(self.propagate_result)
+        if not no_msg:
+            self.worker.finished.connect(
+                lambda: self.show_message(succ_msg if succ_msg is not None else MSG.SUCCESS.FILE_PROCESSED))
         self.worker.finished.connect(self.thread.quit)
         self.worker.finished.connect(self.worker.deleteLater)
 
@@ -78,3 +82,6 @@ class BaseWidget(QMainWindow):
 
     def hide_loader(self):
         self.loader.hide()
+
+    def propagate_result(self, result):
+        self.sig_result.emit(result)
