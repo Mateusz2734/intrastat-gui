@@ -51,4 +51,4 @@ class SettingsWindow(BaseWidget):
                 file.write(yaml_data)
                 self.show_message(MSG.SUCCESS.SETTINGS_SAVED)
         else:
-            self.show_warning(MSG.ERRORS.INVALID_YAML)
+            self.show_warning(MSG.WARNINGS.INVALID_YAML)
