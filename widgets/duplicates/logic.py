@@ -19,7 +19,7 @@ def duplicates(args):
     path = args[0]
     column = args[1]
 
-    data = pd.read_excel(path)
+    data = pd.read_excel(path, dtype="str")
 
     data.drop_duplicates(subset=column, inplace=True)
 
