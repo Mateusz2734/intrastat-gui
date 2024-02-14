@@ -9,6 +9,7 @@ DEFAULT_DATA = {
     "intrastat": {"db1": None, "db2": None},
     "sampa": {"db": None},
     "desha": {"db": None},
+    "sem": {"db": None}
 }
 
 def create_settings():

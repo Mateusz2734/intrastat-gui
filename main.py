@@ -17,6 +17,7 @@ from widgets.invoice.widget import InvoiceWindow
 from widgets.convert.widget import ConvertWindow
 from widgets.sampa.widget import SampaWindow
 from widgets.desha.widget import DeshaWindow
+from widgets.sem.widget import SemWindow
 from widgets.duplicates.widget import DuplicatesWindow
 from widgets.settings.widget import SettingsWindow
 from widgets.BaseWidget import BaseWidget
@@ -44,6 +45,7 @@ class MainWindow(QMainWindow):
         self.convert_btn = self.findChild(QPushButton, "convert_btn")
         self.sampa_btn = self.findChild(QPushButton, "sampa_btn")
         self.desha_btn = self.findChild(QPushButton, "desha_btn")
+        self.sem_btn = self.findChild(QPushButton, "sem_btn")
         self.duplicates_btn = self.findChild(QPushButton, "duplicates_btn")
         self.settings_btn = self.findChild(QPushButton, "settings_btn")
 
@@ -62,6 +64,9 @@ class MainWindow(QMainWindow):
         )
         self.desha_btn.clicked.connect(
             lambda: self.add_window(DeshaWindow, MSG.TITLES.DESHA)
+        )
+        self.sem_btn.clicked.connect(
+            lambda: self.add_window(SemWindow, MSG.TITLES.SEM)
         )
         self.duplicates_btn.clicked.connect(
             lambda: self.add_window(DuplicatesWindow, MSG.TITLES.DUPLICATES)

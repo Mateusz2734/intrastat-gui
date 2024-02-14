@@ -5,6 +5,7 @@ class MSG:
         CONVERT = "ZMIANA PLIKU | Wprowadź informacje"
         SAMPA = "SAMPA | Wprowadź informacje"
         DESHA = "DESHA | Wprowadź informacje"
+        SEM = "SEM | Wprowadź informacje"
         DUPLICATES = "USUWANIE DUPLIKATÓW | Wprowadź informacje"
         SETTINGS = "USTAWIENIA | Zmień domyślne wartości"
 

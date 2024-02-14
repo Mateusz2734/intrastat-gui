@@ -3,6 +3,7 @@ import os.path as p
 
 
 class PATHS:
+    MAIN = "C:/Skrypty/Pomocnik"
     SETTINGS = "C:/Skrypty/Pomocnik/settings.yaml"
     DESKTOP = f"C:/Users/{os.getlogin()}/Desktop"
     BASEDIR = f"{p.dirname(p.dirname(__file__))}"
