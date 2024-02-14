@@ -18,7 +18,7 @@ class MSG:
         CANT_PROCESS = "Wystąpił błąd w trakcie przetwarzania pliku"
 
     class WARNINGS:
-        INVALID_YAML = "Nieprawidłowa postać pliku .yaml"
+        INVALID_JSON = "Nieprawidłowa postać pliku .json"
         MISSING_DATA = "Proszę uzupełnić wszystkie dane!"
 
     class SUCCESS:

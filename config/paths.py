@@ -4,7 +4,7 @@ import os.path as p
 
 class PATHS:
     MAIN = "C:/Skrypty/Pomocnik"
-    SETTINGS = "C:/Skrypty/Pomocnik/settings.yaml"
+    SETTINGS = "C:/Skrypty/Pomocnik/settings.json"
     DESKTOP = f"C:/Users/{os.getlogin()}/Desktop"
     BASEDIR = f"{p.dirname(p.dirname(__file__))}"
     TEMP = "C:/Skrypty/Pomocnik/temp.xlsx"

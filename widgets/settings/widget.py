@@ -1,5 +1,4 @@
 import json
-import yaml
 import os.path as p
 
 from PyQt5.QtWidgets import QPushButton, QPlainTextEdit
@@ -10,9 +9,9 @@ from config.messages import MSG
 from widgets.BaseWidget import BaseWidget
 
 
-def is_yaml(candidate):
+def is_json(candidate):
     try:
-        yaml.safe_load(candidate)
+        json.loads(candidate)
     except ValueError:
         return False
     return True
@@ -38,17 +37,19 @@ class SettingsWindow(BaseWidget):
     def load_data(self):
         try:
             with open(self.path, "r") as file:
-                data = yaml.safe_load(file)
-                self.editor.setPlainText(yaml.safe_dump(data))
+                data = json.load(file)
+                self.editor.setPlainText(json.dumps(
+                    data, indent=4, sort_keys=True))
         except Exception:
             self.show_error(MSG.ERRORS.CANT_OPEN)
 
     def save_data(self):
         data = self.editor.toPlainText()
-        if is_yaml(data):
-            yaml_data = json.dumps(yaml.safe_load(data))
+        if is_json(data):
+            json_data = json.dumps(json.loads(data), indent=4, 
+                                   sort_keys=True)
             with open(self.path, "w") as file:
-                file.write(yaml_data)
+                file.write(json_data)
                 self.show_message(MSG.SUCCESS.SETTINGS_SAVED)
         else:
-            self.show_warning(MSG.WARNINGS.INVALID_YAML)
+            self.show_warning(MSG.WARNINGS.INVALID_JSON)
