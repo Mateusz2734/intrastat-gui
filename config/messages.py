@@ -24,3 +24,4 @@ class MSG:
     class SUCCESS:
         SETTINGS_SAVED = "Pomyślnie zapisano ustawienia."
         FILE_PROCESSED = "Plik przetworzony pomyślnie."
+        DB_CHANGED = "Pomyślnie zmieniono bazę danych."
