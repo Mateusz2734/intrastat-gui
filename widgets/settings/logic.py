@@ -1,6 +1,6 @@
 import logging as log
 from os.path import exists as file_exists
-from shutil import copy2
+from shutil import copy2, SameFileError
 import json
 
 from config.paths import PATHS
@@ -55,6 +55,9 @@ def is_json(candidate):
 def move_file(path):
     try:
         return copy2(path, PATHS.MAIN)
+    except SameFileError as e:
+        log.error(f"{__name__} :: {str(e)}")
+        return path
     except Exception as e:
         log.error(f"{__name__} :: {str(e)}")
         return ""

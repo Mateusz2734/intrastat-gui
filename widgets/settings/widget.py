@@ -76,7 +76,7 @@ class SettingsWindow(BaseWidget):
 
         if fpath[0] == "":
             return
-        
+
         moved_path = move_file(fpath[0])
 
         if moved_path == "":
@@ -84,8 +84,8 @@ class SettingsWindow(BaseWidget):
             return
 
         self.settings[key1][key2] = moved_path
-        self.show_message(MSG.SUCCESS.DB_CHANGED)
-
         self.populate_labels()
+
+        self.show_message(MSG.SUCCESS.DB_CHANGED)
 
         save_settings(self.settings)
