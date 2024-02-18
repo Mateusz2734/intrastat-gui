@@ -25,3 +25,6 @@ class MSG:
         SETTINGS_SAVED = "Pomyślnie zapisano ustawienia."
         FILE_PROCESSED = "Plik przetworzony pomyślnie."
         DB_CHANGED = "Pomyślnie zmieniono bazę danych."
+
+    class MISC:
+        CHOOSE_COLUMN = "Wybierz kolumnę"
