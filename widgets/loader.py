@@ -1,25 +1,21 @@
-import os
 import os.path as p
 
-from PyQt5.QtWidgets import QLabel, QWidget
-from PyQt5.QtCore import Qt, QSize
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtCore import QSize
 from PyQt5.QtGui import QMovie
 
 from config.paths import PATHS
 
 
-class Loader(QWidget):
+class Loader(QLabel):
     def __init__(self):
         super().__init__()
-        self.resize(232, 148)
-        self.label = QLabel(self)
-        self.label.setMinimumSize(QSize(232, 148))
-        self.label.setMaximumSize(QSize(232, 148))
-        self.setWindowFlag(Qt.FramelessWindowHint)
-        self.setWindowFlag(Qt.WindowStaysOnTopHint)
-        self.setStyleSheet("QLabel {background-color: #242424}")
-
         self.movie = QMovie(p.join(PATHS.BASEDIR, p.normpath(PATHS.STYLE.LOADER)))
-        self.label.setMovie(self.movie)
+
+        self.resize(232, 148)
+        self.setMinimumSize(QSize(232, 148))
+        self.setMaximumSize(QSize(232, 148))
+
+        self.setMovie(self.movie)
 
         self.movie.start()

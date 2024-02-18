@@ -1,7 +1,6 @@
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
 from PyQt5.QtCore import Qt, QThread, pyqtSignal
 
-from widgets.loader import Loader
 from widgets.worker import Worker
 from config.messages import MSG
 
@@ -10,11 +9,11 @@ STYLE = "QMessageBox {border: 2px solid #4891b4; border-radius:15px}"
 
 class BaseWidget(QMainWindow):
     sig_result = pyqtSignal(list)
+    start_loading = pyqtSignal()
+    end_loading = pyqtSignal()
 
     def __init__(self):
         super().__init__()
-
-        self.loader = Loader()
 
     def show_message(self, message: str):
         msg = QMessageBox(self)
@@ -46,7 +45,9 @@ class BaseWidget(QMainWindow):
         err.setWindowFlag(Qt.FramelessWindowHint)
         err.exec()
 
-    def run_worker(self, logic, *args, err_msg=None, succ_msg=None, result_type=None, no_msg=False):
+    def run_worker(
+        self, logic, *args, err_msg=None, succ_msg=None, result_type=None, no_msg=False
+    ):
         self.thread = QThread()
 
         self.worker = Worker(logic, args, type=result_type)
@@ -59,7 +60,10 @@ class BaseWidget(QMainWindow):
         # In case of error
         self.worker.error.connect(self.hide_loader)
         self.worker.error.connect(
-            lambda: self.show_error(err_msg if err_msg is not None else MSG.ERRORS.CANT_PROCESS))
+            lambda: self.show_error(
+                err_msg if err_msg is not None else MSG.ERRORS.CANT_PROCESS
+            )
+        )
         self.worker.error.connect(self.thread.quit)
         self.worker.error.connect(self.worker.deleteLater)
 
@@ -69,7 +73,10 @@ class BaseWidget(QMainWindow):
             self.worker.finished.connect(self.propagate_result)
         if not no_msg:
             self.worker.finished.connect(
-                lambda: self.show_message(succ_msg if succ_msg is not None else MSG.SUCCESS.FILE_PROCESSED))
+                lambda: self.show_message(
+                    succ_msg if succ_msg is not None else MSG.SUCCESS.FILE_PROCESSED
+                )
+            )
         self.worker.finished.connect(self.thread.quit)
         self.worker.finished.connect(self.worker.deleteLater)
 
@@ -78,10 +85,10 @@ class BaseWidget(QMainWindow):
         self.thread.start()
 
     def show_loader(self):
-        self.loader.show()
+        self.start_loading.emit()
 
     def hide_loader(self):
-        self.loader.hide()
+        self.end_loading.emit()
 
     def propagate_result(self, result):
         self.sig_result.emit(result)
