@@ -16,7 +16,7 @@ def desha(args):
     name = os.path.basename(desha_file).split(".")[0]
 
     # make dataframe from .xlsx file and set default value on column 4
-    frame = pd.read_excel(desha_file)
+    frame = pd.read_excel(desha_file, converters={"Kod towaru": str})
     frame["Unnamed: 4"] = False
     frame.rename(columns={"Unnamed: 4": "Kod dodatkowy"}, inplace=True)
 
