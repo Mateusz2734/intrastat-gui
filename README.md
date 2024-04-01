@@ -28,5 +28,15 @@ The table below illustrates the time saved by automating processes. It's importa
 - Overall code quality
 - Anything that my mother requests 😉
 
+## Screenshots
+#### Main Window
+![Main Window](docs/main-page.png)
+
+#### Settings
+![Settings](docs/settings-page.png)
+
+#### Intrastat
+![Intrastat](docs/intrastat-page.png)
+
 ## License
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) for details.
