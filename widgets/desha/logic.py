@@ -34,7 +34,7 @@ def desha(args):
             i = db_Symbol.index(kodTowaru)
             frame.loc[index, "Kod towaru"] = db_Symbol[i]
             frame.loc[index, "Nazwa"] = db_Nazwa[i]
-            frame.loc[index, "Taryfa c."] = db_Pcn[i]
+            frame.loc[index, "Taryfa c."] = int(db_Pcn[i])
             frame.loc[index, "Kod dodatkowy"] = db_Taric[i]
 
     # save dataframe as .xlsx file
